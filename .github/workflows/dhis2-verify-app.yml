@@ -10,7 +10,10 @@ name: 'dhis2: verify (app)'
 #       'jobs.release.steps.*.cwd'
 #       'jobs.release.steps.*.build-dir'
 
-on: push
+on: 
+  push:
+    branches:
+      - master
 
 concurrency:
     group: ${{ github.workflow}}-${{ github.ref }}
