@@ -10,22 +10,28 @@ const queryOpts = {
     staleTime: 24 * 60 * 60 * 1000,
 }
 
-const calendar = 'gregory';
 export default function usePeriod(periodId) {
     // @TODO(calendar)
-    const { data } = useQuery(queryKey, queryOpts);
-    
+    const [calendar,setCalendar]= useState('gregory');
+    const { data, isLoading } = useQuery(queryKey, queryOpts);
+    console.log("data:",data);
+    useEffect(()=>{
+        if(!isLoading){
+            if(data?.calendar==='ethiopian'){
+                setCalendar('ethiopic');
+            }
+        }
+    });
     return useMemo(() => {
-        const currentCalendar = (data?.calendar==='ethiopian'?'ethiopic':data?.calendar)??calendar;
         if (!periodId) {
             return null
         }
 
         try {
-            return createFixedPeriodFromPeriodId({ periodId, currentCalendar })
+            return createFixedPeriodFromPeriodId({ periodId, calendar })
         } catch (e) {
             console.error(e)
             return null
         }
-    }, [periodId,data?.calendar])
+    }, [periodId,calendar])
 }
