@@ -6,7 +6,7 @@ const queryKey = [`/system/info`]
 
 const queryOpts = {
     refetchOnMount: false,
-    select: selectorFunction,
+    //select: selectorFunction,
     staleTime: 24 * 60 * 60 * 1000,
 }
 
