@@ -60,10 +60,11 @@ export const computePeriodDateLimit = ({
  */
 export const useDateLimit = () => {
     const [dataSetId] = useDataSetId()
-    const { data: metadata } = useMetadata()
-    const { fromClientDate } = useClientServerDateUtils()
-    const currentDate = useClientServerDate()
     const [calendar,setCalendar]= useState('gregory');
+    const { data: metadata } = useMetadata()
+    const { fromClientDate } = useClientServerDateUtils(calendar);
+    const currentDate = useClientServerDate({calendar: calendar})
+    
     const { data, isLoading } = useQuery(queryKey, queryOpts);
     console.log("1currentdate:",currentDate);
     useEffect(()=>{
@@ -76,7 +77,7 @@ export const useDateLimit = () => {
     const currentDay = useMemo(()=>formatJsDateToDateString((calendar ==='ethiopic'?(currentDate?.serverDate)?.toLocaleDateString('en-GB-u-ca-ethiopic'):currentDate.serverDate)),[calendar]);
     return useMemo(
         () => {
-            const currentDate = fromClientDate(getCurrentDate())
+            const currentDate = fromClientDate(getCurrentDate(calendar))
             console.log("current Date:",currentDate);
             const dataSet = selectors.getDataSetById(metadata, dataSetId)
 

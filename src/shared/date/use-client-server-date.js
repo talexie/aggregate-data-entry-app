@@ -5,6 +5,7 @@ import useClientServerDateUtils from './use-client-server-date-utils.js'
 export default function useClientServerDate({
     clientDate: clientDateInput,
     serverDate: serverDateInput,
+    calendar
 } = {}) {
     if (clientDateInput && serverDateInput) {
         throw new Error(
@@ -12,14 +13,14 @@ export default function useClientServerDate({
         )
     }
 
-    const { fromClientDate, fromServerDate } = useClientServerDateUtils()
+    const { fromClientDate, fromServerDate } = useClientServerDateUtils(calendar);
     const [{ clientDate, serverDate }] = useState(() => {
         if (serverDateInput) {
             return fromServerDate(serverDateInput)
         }
 
         return fromClientDate(
-            clientDateInput ? clientDateInput : getCurrentDate()
+            clientDateInput ? clientDateInput : getCurrentDate(calendar)
         )
     })
 

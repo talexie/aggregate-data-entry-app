@@ -2,12 +2,12 @@ import { useConfig } from '@dhis2/app-runtime'
 import { useMemo } from 'react'
 import { getCurrentDate } from '../fixed-periods/index.js'
 
-export default function useServerTimeOffset() {
+export default function useServerTimeOffset(calendar='gregory') {
     const { systemInfo } = useConfig()
     const { serverTimeZoneId: timeZone } = systemInfo
 
     return useMemo(() => {
-        const currentDate = getCurrentDate()
+        const currentDate = getCurrentDate(calendar);
         const serverLocaleString = currentDate.toLocaleString('sv', {
             timeZone,
         })

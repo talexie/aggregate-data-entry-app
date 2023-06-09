@@ -30,7 +30,7 @@ export default function usePeriods({
 
     const { data: userInfo } = useUserInfo()
     const { keyUiLocale: locale } = userInfo.settings
-    const currentDate = useClientServerDate()
+    const currentDate = useClientServerDate({calendar:calendar});
 
     useEffect(()=>{
         if(!isLoading){
