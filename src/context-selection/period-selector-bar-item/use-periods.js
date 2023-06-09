@@ -1,12 +1,21 @@
 import { generateFixedPeriods } from '@dhis2/multi-calendar-dates'
 import moment from 'moment'
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import {
     formatJsDateToDateString,
     useClientServerDate,
     useUserInfo,
     yearlyFixedPeriodTypes,
 } from '../../shared/index.js'
+import { useQuery } from '@tanstack/react-query';
+
+const queryKey = [`/system/info`]
+
+const queryOpts = {
+    refetchOnMount: false,
+    //select: selectorFunction,
+    staleTime: 24 * 60 * 60 * 1000,
+}
 
 export default function usePeriods({
     periodType,
@@ -16,11 +25,21 @@ export default function usePeriods({
     openFuturePeriods,
 }) {
     // @TODO(calendar)
-    const calendar = 'gregory'
+    const [calendar,setCalendar]= useState('gregory');
+    const { data, isLoading } = useQuery(queryKey, queryOpts);
+
     const { data: userInfo } = useUserInfo()
     const { keyUiLocale: locale } = userInfo.settings
     const currentDate = useClientServerDate()
-    const currentDay = formatJsDateToDateString(currentDate.serverDate)
+
+    useEffect(()=>{
+        if(!isLoading){
+            if(data?.calendar==='ethiopian'){
+                setCalendar('ethiopic');
+            }
+        }
+    });
+    const currentDay = useMemo(()=>formatJsDateToDateString((calender==='ethiopic'?(currentDate?.serverDate)?.toLocaleDateString('en-GB-u-ca-ethiopic'):currentDate.serverDate)),[calendar]);
 
     return useMemo(() => {
         // Adding `currentDay` to the dependency array so this hook will

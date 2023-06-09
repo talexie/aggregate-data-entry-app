@@ -3,7 +3,7 @@ import {
     getFixedPeriodByDate,
 } from '@dhis2/multi-calendar-dates'
 import moment from 'moment'
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import {
     selectors,
     useDataSetId,
@@ -14,13 +14,22 @@ import {
     useClientServerDateUtils,
     useClientServerDate,
 } from '../../shared/index.js'
+import { useQuery } from '@tanstack/react-query';
 
+const queryKey = [`/system/info`]
+
+const queryOpts = {
+    refetchOnMount: false,
+    //select: selectorFunction,
+    staleTime: 24 * 60 * 60 * 1000,
+}
 export const computePeriodDateLimit = ({
     periodType,
     serverDate,
     openFuturePeriods = 0,
+    calendar
 }) => {
-    const calendar = 'gregory'
+    //const calendar = 'gregory'
     const date = moment(serverDate).format('yyyy-MM-DD')
     const currentPeriod = getFixedPeriodByDate({
         periodType,
@@ -54,15 +63,25 @@ export const useDateLimit = () => {
     const { data: metadata } = useMetadata()
     const { fromClientDate } = useClientServerDateUtils()
     const currentDate = useClientServerDate()
-    const currentDay = formatJsDateToDateString(currentDate.serverDate)
+    const [calendar,setCalendar]= useState('gregory');
+    const { data, isLoading } = useQuery(queryKey, queryOpts);
 
+    useEffect(()=>{
+        if(!isLoading){
+            if(data?.calendar==='ethiopian'){
+                setCalendar('ethiopic');
+            }
+        }
+    });
+    const currentDay = useMemo(()=>formatJsDateToDateString((calendar ==='ethiopic'?(currentDate?.serverDate)?.toLocaleDateString('en-GB-u-ca-ethiopic'):currentDate.serverDate)),[calendar]);
     return useMemo(
         () => {
-            const currentDate = fromClientDate(getCurrentDate())
+            //const currentDate = fromClientDate(getCurrentDate())
             const dataSet = selectors.getDataSetById(metadata, dataSetId)
 
             if (!dataSet) {
-                return currentDate.serverDate
+                //return currentDate.serverDate
+                return currentDay;
             }
 
             const periodType = periodTypesMapping[dataSet.periodType]
@@ -71,7 +90,9 @@ export const useDateLimit = () => {
             return computePeriodDateLimit({
                 periodType,
                 openFuturePeriods,
-                serverDate: currentDate.serverDate,
+                //serverDate: currentDate.serverDate,
+                serverDate: currentDay,
+                calendar
             })
         },
 

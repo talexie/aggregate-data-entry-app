@@ -14,7 +14,6 @@ export default function usePeriod(periodId) {
     // @TODO(calendar)
     const [calendar,setCalendar]= useState('gregory');
     const { data, isLoading } = useQuery(queryKey, queryOpts);
-    console.log("data:",data);
     useEffect(()=>{
         if(!isLoading){
             if(data?.calendar==='ethiopian'){
