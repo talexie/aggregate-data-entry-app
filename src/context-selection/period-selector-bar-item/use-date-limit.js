@@ -36,7 +36,7 @@ export const computePeriodDateLimit = ({
         date,
         calendar,
     })
-
+    console.log("current Period:",currentPeriod);
     if (openFuturePeriods <= 0) {
         return new Date(currentPeriod.startDate)
     }
@@ -65,7 +65,7 @@ export const useDateLimit = () => {
     const currentDate = useClientServerDate()
     const [calendar,setCalendar]= useState('gregory');
     const { data, isLoading } = useQuery(queryKey, queryOpts);
-
+    console.log("1currentdate:",currentDate);
     useEffect(()=>{
         if(!isLoading){
             if(data?.calendar==='ethiopian'){
@@ -76,12 +76,13 @@ export const useDateLimit = () => {
     const currentDay = useMemo(()=>formatJsDateToDateString((calendar ==='ethiopic'?(currentDate?.serverDate)?.toLocaleDateString('en-GB-u-ca-ethiopic'):currentDate.serverDate)),[calendar]);
     return useMemo(
         () => {
-            //const currentDate = fromClientDate(getCurrentDate())
+            const currentDate = fromClientDate(getCurrentDate())
+            console.log("current Date:",currentDate);
             const dataSet = selectors.getDataSetById(metadata, dataSetId)
 
             if (!dataSet) {
-                //return currentDate.serverDate
-                return currentDay;
+                return currentDate.serverDate
+                //return currentDay;
             }
 
             const periodType = periodTypesMapping[dataSet.periodType]
@@ -90,8 +91,7 @@ export const useDateLimit = () => {
             return computePeriodDateLimit({
                 periodType,
                 openFuturePeriods,
-                //serverDate: currentDate.serverDate,
-                serverDate: currentDay,
+                serverDate: currentDate.serverDate,
                 calendar: calendar
             })
         },

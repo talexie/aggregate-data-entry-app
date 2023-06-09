@@ -106,7 +106,7 @@ export default function usePeriods({
         ) {
             periods.push(firstPeriodNextYear)
         }
-
+        console.log("pe:",periods);
         return periods.reverse()
     }, [periodType, currentDay, year, dateLimit, locale, openFuturePeriods])
 }
