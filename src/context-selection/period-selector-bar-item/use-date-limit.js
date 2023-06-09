@@ -92,7 +92,7 @@ export const useDateLimit = () => {
                 openFuturePeriods,
                 //serverDate: currentDate.serverDate,
                 serverDate: currentDay,
-                calendar
+                calendar: calendar
             })
         },
 
