@@ -3,9 +3,9 @@
  */
 export default function getCurrentDate(calendar='gregory') {
     
-    let currentDate = new Date(Date.now().setMilliseconds(0));
+    let currentDate = new Date(Date.now());
     if(calendar === 'ethiopic'){
-        currentDate = new Date(Date.now().setMilliseconds(0))?.toLocaleDateString('en-GB-u-ca-ethiopic');
+        currentDate = new Date(Date.now())?.toLocaleDateString('en-GB-u-ca-ethiopic');
     }
 
     // This will ensure that there's no rounding issue when calculating the
