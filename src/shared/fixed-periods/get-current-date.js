@@ -3,14 +3,14 @@
  */
 export default function getCurrentDate(calendar='gregory') {
     
-    let currentDate = new Date(Date.now());
+    let currentDate = new Date(Date.now().setMilliseconds(0));
     if(calendar === 'ethiopic'){
-        currentDate = new Date(Date.now())?.toLocaleDateString('en-GB-u-ca-ethiopic');
+        currentDate = new Date(Date.now().setMilliseconds(0))?.toLocaleDateString('en-GB-u-ca-ethiopic');
     }
 
     // This will ensure that there's no rounding issue when calculating the
     // offset to the server time
-    currentDate.setMilliseconds(0)
+    //currentDate.setMilliseconds(0)
 
     return currentDate
 }
