@@ -9,7 +9,7 @@ export default function useClientServerDateUtils(calendar='gregory') {
         (serverDate) => {
             let clientDate = new Date(serverDate.getTime() + serverTimeOffset);
             if(calendar === 'ethiopic'){
-                clientDate = moment(new Date(serverDate.getTime() + serverTimeOffset)?.toLocaleDateString('en-GB-u-ca-ethiopic'));
+                clientDate = moment(new Date(serverDate.getTime() + serverTimeOffset)?.toLocaleDateString('en-GB-u-ca-ethiopic').substring(0,10));
             }
             return { serverDate, clientDate }
         },
