@@ -66,7 +66,6 @@ export const useDateLimit = () => {
     const currentDate = useClientServerDate({calendar: calendar})
     
     const { data, isLoading } = useQuery(queryKey, queryOpts);
-    console.log("1currentdate:",currentDate);
     useEffect(()=>{
         if(!isLoading){
             if(data?.calendar==='ethiopian'){
@@ -77,6 +76,7 @@ export const useDateLimit = () => {
     const currentDay = formatJsDateToDateString(currentDate?.serverDate);
     return useMemo(
         () => {
+            console.log("calendar:",calendar);
             const currentDate = fromClientDate(getCurrentDate(calendar))
             console.log("current Date:",currentDate);
             const dataSet = selectors.getDataSetById(metadata, dataSetId)
