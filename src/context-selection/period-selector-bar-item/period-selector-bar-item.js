@@ -27,8 +27,8 @@ const getMaxYear = (dateLimit) => {
     return new Date(dateLimit - 1).getUTCFullYear()
 }
 
-export const PeriodSelectorBarItem = () => {
-    const currentDate = useClientServerDate()
+export const PeriodSelectorBarItem = ({ calendar }) => {
+    const currentDate = useClientServerDate({calendar: calendar })
     const currentDay = formatJsDateToDateString(currentDate.serverDate)
     const currentFullYear = parseInt(currentDay.split('-')[0])
     const [periodOpen, setPeriodOpen] = useState(false)
@@ -134,6 +134,7 @@ export const PeriodSelectorBarItem = () => {
                                     setPeriodId(selected)
                                     setPeriodOpen(false)
                                 }}
+                                calendar ={ calendar }
                             />
                         </>
                     ) : (

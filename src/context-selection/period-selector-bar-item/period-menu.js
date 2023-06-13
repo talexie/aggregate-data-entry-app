@@ -4,9 +4,9 @@ import React from 'react'
 import { usePeriod, usePeriodId } from '../../shared/index.js'
 import classes from './period-menu.module.css'
 
-export default function PeriodMenu({ onChange, periods }) {
+export default function PeriodMenu({ onChange, periods, calendar }) {
     const [periodId] = usePeriodId()
-    const selectedPeriod = usePeriod(periodId)
+    const selectedPeriod = usePeriod(periodId, calendar);
 
     return (
         <Menu dense className={classes.menu} dataTest="period-selector-menu">

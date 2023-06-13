@@ -14,9 +14,20 @@ import { SectionFilterSelectorBarItem } from '../section-filter-selector-bar-ite
 import styles from './context-selection.module.css'
 import RightHandSideContent from './right-hand-side-content.js'
 import useShouldHideClearButton from './use-should-hide-clear-button.js'
+import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
 
+const queryKey = [`/system/info`]
+
+const queryOpts = {
+    refetchOnMount: false,
+    //select: selectorFunction,
+    staleTime: 24 * 60 * 60 * 1000,
+}
 export default function ContextSelector({ setSelectionHasNoFormMessage }) {
     useManageInterParamDependencies()
+    const [calendar,setCalendar]= useState('gregory');
+    const { data, isLoading } = useQuery(queryKey, queryOpts);
 
     const { hide } = useRightHandPanelContext()
     const hideClearButton = useShouldHideClearButton()
@@ -29,7 +40,13 @@ export default function ContextSelector({ setSelectionHasNoFormMessage }) {
             hide()
         }
     }
-
+    useEffect(()=>{
+        if(!isLoading){
+            if(data?.calendar==='ethiopian'){
+                setCalendar('ethiopic');
+            }
+        }
+    },[data?.calendar,isLoading]);
     return (
         <div className={styles.hideForPrint}>
             <SelectorBar
@@ -38,7 +55,7 @@ export default function ContextSelector({ setSelectionHasNoFormMessage }) {
             >
                 <DataSetSelectorBarItem />
                 <OrgUnitSetSelectorBarItem />
-                <PeriodSelectorBarItem />
+                <PeriodSelectorBarItem calendar={ calendar }/>
                 <AttributeOptionComboSelectorBarItem
                     setSelectionHasNoFormMessage={setSelectionHasNoFormMessage}
                 />
