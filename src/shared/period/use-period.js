@@ -20,7 +20,7 @@ export default function usePeriod(periodId) {
                 setCalendar('ethiopic');
             }
         }
-    });
+    },[data?.calendar,isLoading]);
     return useMemo(() => {
         if (!periodId) {
             return null

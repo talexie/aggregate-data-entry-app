@@ -38,7 +38,7 @@ export default function usePeriods({
                 setCalendar('ethiopic');
             }
         }
-    });
+    },[data?.calendar,isLoading]);
     const currentDay = formatJsDateToDateString(currentDate.serverDate);
 
     return useMemo(() => {

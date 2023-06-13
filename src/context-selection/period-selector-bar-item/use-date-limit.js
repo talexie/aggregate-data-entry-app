@@ -73,7 +73,7 @@ export const useDateLimit = () => {
                 setCalendar('ethiopic');
             }
         }
-    });
+    },[data?.calendar,isLoading]);
     const currentDay = formatJsDateToDateString(currentDate?.serverDate);
     return useMemo(
         () => {
@@ -82,7 +82,6 @@ export const useDateLimit = () => {
             const dataSet = selectors.getDataSetById(metadata, dataSetId)
 
             if (!dataSet) {
-                //return currentDate.serverDate
                 return currentDay;
             }
 
@@ -100,6 +99,6 @@ export const useDateLimit = () => {
         // Adding `dateWithoutTime` to the dependency array so this hook will
         // recompute the date limit when the actual date changes
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [dataSetId, metadata, currentDay, fromClientDate]
+        [dataSetId, metadata, currentDay, fromClientDate,calendar]
     )
 }
