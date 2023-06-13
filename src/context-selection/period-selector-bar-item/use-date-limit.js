@@ -74,7 +74,7 @@ export const useDateLimit = () => {
             }
         }
     });
-    const currentDay = useMemo(()=>formatJsDateToDateString((calendar ==='ethiopic'?(currentDate?.serverDate)?.toLocaleDateString('en-GB-u-ca-ethiopic'):currentDate.serverDate)),[calendar]);
+    const currentDay = formatJsDateToDateString(currentDate?.serverDate);
     return useMemo(
         () => {
             const currentDate = fromClientDate(getCurrentDate(calendar))
@@ -82,8 +82,8 @@ export const useDateLimit = () => {
             const dataSet = selectors.getDataSetById(metadata, dataSetId)
 
             if (!dataSet) {
-                return currentDate.serverDate
-                //return currentDay;
+                //return currentDate.serverDate
+                return currentDay;
             }
 
             const periodType = periodTypesMapping[dataSet.periodType]

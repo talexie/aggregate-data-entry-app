@@ -39,7 +39,7 @@ export default function usePeriods({
             }
         }
     });
-    const currentDay = useMemo(()=>formatJsDateToDateString((calendar==='ethiopic'?(currentDate?.serverDate)?.toLocaleDateString('en-GB-u-ca-ethiopic'):currentDate.serverDate)),[calendar]);
+    const currentDay = formatJsDateToDateString(currentDate.serverDate);
 
     return useMemo(() => {
         // Adding `currentDay` to the dependency array so this hook will
