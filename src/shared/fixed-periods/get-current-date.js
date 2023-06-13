@@ -1,3 +1,4 @@
+import moment from 'moment';
 /**
  * Initialise a Date instance with Date.now() for Jest mocking.
  */
