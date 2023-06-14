@@ -3,7 +3,7 @@ import {
     getFixedPeriodByDate,
 } from '@dhis2/multi-calendar-dates'
 import moment from 'moment'
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo } from 'react'
 import {
     selectors,
     useDataSetId,
@@ -14,15 +14,7 @@ import {
     useClientServerDateUtils,
     useClientServerDate,
 } from '../../shared/index.js'
-import { useQuery } from '@tanstack/react-query';
 
-const queryKey = [`/system/info`]
-
-const queryOpts = {
-    refetchOnMount: false,
-    //select: selectorFunction,
-    staleTime: 24 * 60 * 60 * 1000,
-}
 export const computePeriodDateLimit = ({
     periodType,
     serverDate,
@@ -36,7 +28,6 @@ export const computePeriodDateLimit = ({
         date,
         calendar,
     })
-    console.log("current Period:",currentPeriod);
     if (openFuturePeriods <= 0) {
         return new Date(currentPeriod.startDate)
     }
@@ -58,21 +49,11 @@ export const computePeriodDateLimit = ({
  * two days ahead as that's the first day that's not allowed (the current
  * period is a considered afuture period)
  */
-export const useDateLimit = () => {
+export const useDateLimit = (calendar) => {
     const [dataSetId] = useDataSetId()
-    const [calendar,setCalendar]= useState('gregory');
     const { data: metadata } = useMetadata()
     const { fromClientDate } = useClientServerDateUtils(calendar);
     const currentDate = useClientServerDate({calendar: calendar})
-    
-    const { data, isLoading } = useQuery(queryKey, queryOpts);
-    useEffect(()=>{
-        if(!isLoading){
-            if(data?.calendar==='ethiopian'){
-                setCalendar('ethiopic');
-            }
-        }
-    },[data?.calendar,isLoading]);
     const currentDay = formatJsDateToDateString(currentDate?.serverDate);
     return useMemo(
         () => {

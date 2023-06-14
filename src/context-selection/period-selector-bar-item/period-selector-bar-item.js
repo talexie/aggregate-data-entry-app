@@ -27,13 +27,13 @@ const getMaxYear = (dateLimit) => {
     return new Date(dateLimit - 1).getUTCFullYear()
 }
 
-export const PeriodSelectorBarItem = ({ calendar }) => {
+export const PeriodSelectorBarItem = ({ calendar, loading }) => {
     const currentDate = useClientServerDate({calendar: calendar })
     const currentDay = formatJsDateToDateString(currentDate.serverDate)
     const currentFullYear = parseInt(currentDay.split('-')[0])
     const [periodOpen, setPeriodOpen] = useState(false)
     const [periodId, setPeriodId] = usePeriodId()
-    const selectedPeriod = usePeriod(periodId)
+    const selectedPeriod = usePeriod(periodId,calendar)
     const [dataSetId] = useDataSetId()
     const { data: metadata } = useMetadata()
     const dataSet = selectors.getDataSetById(metadata, dataSetId)
@@ -45,7 +45,7 @@ export const PeriodSelectorBarItem = ({ calendar }) => {
 
     const [year, setYear] = useState(selectedPeriod?.year || currentFullYear)
 
-    const dateLimit = useDateLimit()
+    const dateLimit = useDateLimit(calendar);
 
     const [maxYear, setMaxYear] = useState(() => getMaxYear(dateLimit))
     const periods = usePeriods({
@@ -53,6 +53,7 @@ export const PeriodSelectorBarItem = ({ calendar }) => {
         openFuturePeriods,
         dateLimit,
         year,
+        calendar: calendar
     })
 
     useEffect(() => {
@@ -109,7 +110,7 @@ export const PeriodSelectorBarItem = ({ calendar }) => {
         <div data-test="period-selector">
             <DisabledTooltip>
                 <SelectorBarItem
-                    disabled={!dataSetId}
+                    disabled={!dataSetId || loading}
                     label={i18n.t('Period')}
                     value={periodId ? selectorBarItemValue : undefined}
                     open={periodOpen}

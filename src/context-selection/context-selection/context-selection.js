@@ -55,7 +55,7 @@ export default function ContextSelector({ setSelectionHasNoFormMessage }) {
             >
                 <DataSetSelectorBarItem />
                 <OrgUnitSetSelectorBarItem />
-                <PeriodSelectorBarItem calendar={ calendar }/>
+                <PeriodSelectorBarItem calendar={ calendar } loading={ isLoading }/>
                 <AttributeOptionComboSelectorBarItem
                     setSelectionHasNoFormMessage={setSelectionHasNoFormMessage}
                 />
