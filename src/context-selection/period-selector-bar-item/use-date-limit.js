@@ -76,7 +76,7 @@ export const useDateLimit = () => {
     const currentDay = formatJsDateToDateString(currentDate?.serverDate);
     return useMemo(
         () => {
-            console.log("calendar:",calendar, "date:",currentDate);
+            console.log("calendar:",calendar);
             const currentDate = fromClientDate(getCurrentDate(calendar))
             console.log("current Date:",currentDate);
             const dataSet = selectors.getDataSetById(metadata, dataSetId)
