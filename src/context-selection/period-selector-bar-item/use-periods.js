@@ -38,12 +38,12 @@ export default function usePeriods({
             ? year + openFuturePeriods
             : year
         const endsBefore = moment(dateLimit).format('yyyy-MM-DD')
-        console.log("YYYYY::",yearForGenerating,"N::",yearForGenerating - 1970 + 1);
+        
         const generateFixedPeriodsPayload = {
             calendar: calendar,
-            periodType,
+            periodType: periodType,
             year: yearForGenerating,
-            endsBefore,
+            endsBefore: endsBefore,
             locale,
 
             // only used when generating yearly periods, so save to use
@@ -51,8 +51,9 @@ export default function usePeriods({
             // + 1 so we include 1970 as well
             yearsCount: yearForGenerating - 1970 + 1,
         }
+        console.log("YYYYY::",generateFixedPeriodsPayload);
         const periods = generateFixedPeriods(generateFixedPeriodsPayload)
-
+        console.log("YYY1111::",periods);
         if (isYearlyPeriodType) {
             return periods
         }
