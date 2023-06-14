@@ -68,7 +68,8 @@ export const PeriodSelectorBarItem = ({ calendar, loading }) => {
             setMaxYear(newMaxYear)
 
             if (!selectedPeriod?.year) {
-                setYear(currentFullYear)
+                //setYear(currentFullYear);
+                setYear(newMaxYear);
             }
         }
     }, [dataSetPeriodType, selectedPeriod?.year, dateLimit, currentFullYear])

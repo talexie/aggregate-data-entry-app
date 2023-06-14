@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 import useServerTimeOffset from './use-server-time-offset.js';
 import moment from 'moment';
 
-export default function useClientServerDateUtils(calendar='gregory') {
+export default function useClientServerDateUtils(calendar) {
     const serverTimeOffset = useServerTimeOffset(calendar);
 
     const fromServerDate = useCallback(
