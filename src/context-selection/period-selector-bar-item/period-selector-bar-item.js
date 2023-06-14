@@ -42,11 +42,11 @@ export const PeriodSelectorBarItem = ({ calendar, loading }) => {
     const { show: showWarningAlert } = useAlert((message) => message, {
         warning: true,
     })
-
+    
     const [year, setYear] = useState(selectedPeriod?.year || currentFullYear)
 
     const dateLimit = useDateLimit(calendar);
-
+    console.log("Y1:",selectedPeriod?.year,"y2:",currentDay, "type:",dataSetPeriodType,"z:",dateLimit);
     const [maxYear, setMaxYear] = useState(() => getMaxYear(dateLimit))
     const periods = usePeriods({
         periodType: dataSetPeriodType,
@@ -55,7 +55,7 @@ export const PeriodSelectorBarItem = ({ calendar, loading }) => {
         year,
         calendar: calendar
     })
-
+ 
     useEffect(() => {
         if (selectedPeriod?.year) {
             setYear(selectedPeriod.year)
