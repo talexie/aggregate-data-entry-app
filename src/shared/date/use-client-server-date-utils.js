@@ -7,7 +7,6 @@ export default function useClientServerDateUtils(calendar) {
 
     const fromServerDate = useCallback(
         (serverDate) => {
-            console.log("serverDate:",serverDate)
             let clientDate = new Date(serverDate.getTime() + serverTimeOffset);
             if(calendar === 'ethiopic'){
                 clientDate = new Date(moment(new Date(serverDate.getTime() + serverTimeOffset)?.toLocaleDateString('en-GB-u-ca-ethiopic').substring(0,10)));

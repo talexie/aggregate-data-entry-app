@@ -28,7 +28,7 @@ const getMaxYear = (dateLimit) => {
 }
 
 export const PeriodSelectorBarItem = ({ calendar, loading }) => {
-    const currentDate = useClientServerDate({calendar: calendar })
+    const currentDate = useClientServerDate({ calendar })
     const currentDay = formatJsDateToDateString(currentDate.serverDate)
     const currentFullYear = parseInt(currentDay.split('-')[0])
     const [periodOpen, setPeriodOpen] = useState(false)
@@ -51,8 +51,8 @@ export const PeriodSelectorBarItem = ({ calendar, loading }) => {
     const periods = usePeriods({
         periodType: dataSetPeriodType,
         openFuturePeriods,
-        dateLimit,
-        year,
+        dateLimit: dateLimit,
+        year: year,
         calendar: calendar
     })
  
@@ -72,7 +72,8 @@ export const PeriodSelectorBarItem = ({ calendar, loading }) => {
                 setYear(newMaxYear);
             }
         }
-    }, [dataSetPeriodType, selectedPeriod?.year, dateLimit, currentFullYear])
+    //}, [dataSetPeriodType, selectedPeriod?.year, dateLimit, currentFullYear])
+    }, [dataSetPeriodType, selectedPeriod?.year, dateLimit])
 
     useEffect(() => {
         const resetPeriod = (id) => {
