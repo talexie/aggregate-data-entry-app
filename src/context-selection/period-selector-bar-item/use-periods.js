@@ -23,17 +23,7 @@ export default function usePeriods({
     const { keyUiLocale: locale } = userInfo.settings
     const currentDate = useClientServerDate({calendar:calendar});
     const currentDay = formatJsDateToDateString(currentDate.serverDate);
-    
-    return useMemo(() => {
-        // Adding `currentDay` to the dependency array so this hook will
-        // recompute the date limit when the actual date changes
-        currentDay
-
-        if (!periodType) {
-            return []
-        }
-
-        const isYearlyPeriodType = yearlyFixedPeriodTypes.includes(periodType)
+    const isYearlyPeriodType = yearlyFixedPeriodTypes.includes(periodType)
         const yearForGenerating = isYearlyPeriodType
             ? year + openFuturePeriods
             : year
@@ -54,6 +44,16 @@ export default function usePeriods({
         console.log("YYYYY::",generateFixedPeriodsPayload);
         const periods = generateFixedPeriods(generateFixedPeriodsPayload)
         console.log("YYY1111::",periods);
+    return useMemo(() => {
+        // Adding `currentDay` to the dependency array so this hook will
+        // recompute the date limit when the actual date changes
+        currentDay
+
+        if (!periodType) {
+            return []
+        }
+
+        
         if (isYearlyPeriodType) {
             return periods
         }
@@ -92,5 +92,5 @@ export default function usePeriods({
         }
         console.log("pe:",periods);
         return periods.reverse()
-    }, [periodType, currentDay, year, dateLimit, locale, openFuturePeriods])
+    }, [periodType, currentDay, year, isYearlyPeriodType, locale, openFuturePeriods,yearForGenerating,periods,generateFixedPeriodsPayload])
 }
