@@ -38,9 +38,9 @@ export default function usePeriods({
             ? year + openFuturePeriods
             : year
         const endsBefore = moment(dateLimit).format('yyyy-MM-DD')
-
+        console.log("YYYYY::",yearForGenerating,"N::",yearForGenerating - 1970 + 1);
         const generateFixedPeriodsPayload = {
-            calendar,
+            calendar: calendar,
             periodType,
             year: yearForGenerating,
             endsBefore,
