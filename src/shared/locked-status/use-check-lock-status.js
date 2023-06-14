@@ -161,7 +161,7 @@ const isOrgUnitLocked = ({
     return false
 }
 
-export const useCheckLockStatus = () => {
+export const useCheckLockStatus = (calendar) => {
     const [dataSetId] = useDataSetId()
     const orgUnit = useOrgUnit()
     const {
@@ -172,8 +172,8 @@ export const useCheckLockStatus = () => {
     } = orgUnit
 
     const [periodId] = usePeriodId()
-    const selectedPeriod = usePeriod(periodId)
-    const clientServerDateUtils = useClientServerDateUtils()
+    const selectedPeriod = usePeriod(periodId,calendar)
+    const clientServerDateUtils = useClientServerDateUtils(calendar)
 
     const { data: metadata } = useMetadata()
     const dataValueSet = useDataValueSet()

@@ -106,7 +106,7 @@ export const PeriodSelectorBarItem = ({ calendar, loading }) => {
         dataSetPeriodType,
     ])
 
-    const selectorBarItemValue = useSelectorBarItemValue()
+    const selectorBarItemValue = useSelectorBarItemValue(calendar);
 
     return (
         <div data-test="period-selector">

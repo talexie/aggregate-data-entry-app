@@ -22,11 +22,11 @@ import { EntryScreen } from './entry-screen.js'
 import { FinalFormWrapper } from './final-form-wrapper.js'
 import { useHandleHeaderbarStatus } from './use-handle-headerbar-status.js'
 
-export const DataWorkspace = ({ selectionHasNoFormMessage }) => {
+export const DataWorkspace = ({ selectionHasNoFormMessage, calendar="gregory" }) => {
     const queryClient = useQueryClient()
     const { data: metadata } = useMetadata()
     useHandleHeaderbarStatus()
-    useCheckLockStatus()
+    useCheckLockStatus(calendar);
     const updateStore = useValueStore((state) => state.setDataValueSet)
     const initialDataValuesFetch = useDataValueSet()
 
