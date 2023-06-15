@@ -30,7 +30,7 @@ export default function usePeriods({
         
     const generateFixedPeriodsPayload = useMemo(()=>({
         calendar: calendar,
-        periodType: periodType,
+        periodType: periodType??'MONTHLY',
         year: yearForGenerating,
         endsBefore: endsBefore,
         locale,
