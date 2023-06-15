@@ -40,7 +40,7 @@ export default function usePeriods({
         // + 1 so we include 1970 as well
         yearsCount: yearForGenerating - 1970 + 1,
     }),[calendar,periodType, yearForGenerating,endsBefore,locale]);
-
+    console.log("YYY::", generateFixedPeriodsPayload);
     useEffect(()=>{
         setIsYearlyPeriodType(yearlyFixedPeriodTypes.includes(periodType));
     },[periodType]);
@@ -75,14 +75,15 @@ export default function usePeriods({
         const [firstPeriodNextYear] = generateFixedPeriods({
             ...generateFixedPeriodsPayload,
             year: yearForGenerating + 1,
-        })
+        });
 
         // we want to display the last period of the previous year if it
         // stretches into the current year
-        if (
+        if(
             lastPeriodOfPrevYear &&
             `${year}-01-01` <= lastPeriodOfPrevYear.endDate
-        ) {
+        ) 
+        {
             const [lastPeriodOfPrevYear] = generateFixedPeriods({
                 ...generateFixedPeriodsPayload,
                 year: yearForGenerating - 1,
