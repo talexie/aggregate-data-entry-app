@@ -63,7 +63,7 @@ export default function usePeriods({
     return useMemo(() => {
         // Adding `currentDay` to the dependency array so this hook will
         // recompute the date limit when the actual date changes
-        currentDay
+        /////currentDay
 
         if (isYearlyPeriodType) {
             return periods
@@ -73,7 +73,7 @@ export default function usePeriods({
             year: yearForGenerating - 1,
         }).slice(-1)
         const [firstPeriodNextYear] = generateFixedPeriods({
-            ...generateFixedPeriodsPayload,
+            ...generateFixedPeriodsPayload(),
             year: yearForGenerating + 1,
         });
 
@@ -85,7 +85,7 @@ export default function usePeriods({
         ) 
         {
             const [lastPeriodOfPrevYear] = generateFixedPeriods({
-                ...generateFixedPeriodsPayload,
+                ...generateFixedPeriodsPayload(),
                 year: yearForGenerating - 1,
             }).slice(-1)
 
@@ -103,5 +103,5 @@ export default function usePeriods({
         }
         console.log("pe:",periods);
         return periods.reverse()
-    }, [periods, currentDay, year, isYearlyPeriodType,yearForGenerating,generateFixedPeriodsPayload])
+    }, [periods, year, isYearlyPeriodType,yearForGenerating,generateFixedPeriodsPayload])
 }
