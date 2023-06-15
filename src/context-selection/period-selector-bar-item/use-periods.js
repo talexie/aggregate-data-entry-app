@@ -29,7 +29,7 @@ export default function usePeriods({
     const endsBefore = moment(dateLimit).format('yyyy-MM-DD')
         
     const generateFixedPeriodsPayload = useMemo(()=>({
-        calendar: calendar,
+        calendar: (calendar=='ethiopic'?'ethiopian': calendar),
         periodType: periodType??'MONTHLY',
         year: yearForGenerating,
         endsBefore: endsBefore,
