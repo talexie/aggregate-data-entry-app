@@ -41,11 +41,12 @@ export default function ContextSelector({ setSelectionHasNoFormMessage }) {
         }
     }
     useEffect(()=>{
-        if(!isLoading && data?.calendar){
+        if(!isLoading && data){
             setCalendar(data?.calendar);
         }
-        setCalendar('gregory');
-    },[data?.calendar,isLoading]);
+        //setCalendar('gregory');
+    },[data,isLoading]);
+    console.log("data:",data,"isLoading:",isLoading);
     return (
         <div className={styles.hideForPrint}>
             <SelectorBar
