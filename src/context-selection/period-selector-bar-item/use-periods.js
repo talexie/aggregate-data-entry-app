@@ -1,6 +1,6 @@
 import { generateFixedPeriods } from '@dhis2/multi-calendar-dates'
 import moment from 'moment'
-import { useMemo } from 'react'
+import { useMemo, useEffect, useState } from 'react'
 import {
     formatJsDateToDateString,
     useClientServerDate,
@@ -19,45 +19,55 @@ export default function usePeriods({
     calendar
 }) {
     // @TODO(calendar)
+    const [periods, setPeriods] = useState([]);
+    const [isYearlyPeriodType, setIsYearlyPeriodType] = useState(false);
+    const [yearForGenerating, setYearForGenerating]= useState(year);
     const { data: userInfo } = useUserInfo()
     const { keyUiLocale: locale } = userInfo.settings
     const currentDate = useClientServerDate({calendar:calendar});
     const currentDay = formatJsDateToDateString(currentDate.serverDate);
-    
+    const endsBefore = moment(dateLimit).format('yyyy-MM-DD')
+        
+    const generateFixedPeriodsPayload = useMemo(()=>({
+        calendar: calendar,
+        periodType: periodType,
+        year: yearForGenerating,
+        endsBefore: endsBefore,
+        locale,
+
+        // only used when generating yearly periods, so save to use
+        // here, regardless of the period type.
+        // + 1 so we include 1970 as well
+        yearsCount: yearForGenerating - 1970 + 1,
+    }),[calendar,periodType, yearForGenerating,endsBefore,locale]);
+
+    useEffect(()=>{
+        setIsYearlyPeriodType(yearlyFixedPeriodTypes.includes(periodType));
+    },[periodType]);
+
+    useEffect(()=>{
+        setYearForGenerating(isYearlyPeriodType
+        ? year + openFuturePeriods
+        : year)
+    },[year,openFuturePeriods,isYearlyPeriodType]);
+
+    useEffect(()=>{
+        if (!periodType) {
+            setPeriods([])
+        }
+        console.log("YYYYY::",generateFixedPeriodsPayload);
+        setPeriods(generateFixedPeriods(generateFixedPeriodsPayload))
+        
+    },[periodType,generateFixedPeriodsPayload])
+    console.log("YYY1111::",periods);
     return useMemo(() => {
         // Adding `currentDay` to the dependency array so this hook will
         // recompute the date limit when the actual date changes
         currentDay
 
-        if (!periodType) {
-            return []
-        }
-
-        const isYearlyPeriodType = yearlyFixedPeriodTypes.includes(periodType)
-        const yearForGenerating = isYearlyPeriodType
-            ? year + openFuturePeriods
-            : year
-        const endsBefore = moment(dateLimit).format('yyyy-MM-DD')
-        
-        const generateFixedPeriodsPayload = {
-            calendar: calendar,
-            periodType: periodType,
-            year: yearForGenerating,
-            endsBefore: endsBefore,
-            locale,
-
-            // only used when generating yearly periods, so save to use
-            // here, regardless of the period type.
-            // + 1 so we include 1970 as well
-            yearsCount: yearForGenerating - 1970 + 1,
-        }
-        console.log("YYYYY::",generateFixedPeriodsPayload);
-        const periods = generateFixedPeriods(generateFixedPeriodsPayload)
-        console.log("YYY1111::",periods);
         if (isYearlyPeriodType) {
             return periods
         }
-
         const [lastPeriodOfPrevYear] = generateFixedPeriods({
             ...generateFixedPeriodsPayload,
             year: yearForGenerating - 1,
@@ -92,5 +102,5 @@ export default function usePeriods({
         }
         console.log("pe:",periods);
         return periods.reverse()
-    }, [periodType, currentDay, year, dateLimit, locale, openFuturePeriods,calendar])
+    }, [periods, currentDay, year, isYearlyPeriodType,yearForGenerating,generateFixedPeriodsPayload])
 }
