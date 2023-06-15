@@ -7,8 +7,8 @@ import {
     getYearlyPeriods
 
 } from '@dhis2/multi-calendar-dates';
-import { customCalendars } from '@dhis2/multi-calendar-dates/custom-calendars'
-export const isCustomCalendar = (calendar) =>!!customCalendars[calendar]
+
+export const isCustomCalendar = (calendar) =>!!calendar
 export const getCustomCalendarIfExists = (
     calendar
 ) => {
@@ -17,9 +17,7 @@ export const getCustomCalendarIfExists = (
         return calendar
     }
 
-    const customCalendar = customCalendars[
-        calendar
-    ]?.calendar
+    const customCalendar = calendar;
 
     if (!customCalendar) {
         throw new Error(
