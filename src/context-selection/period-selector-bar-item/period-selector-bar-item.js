@@ -36,7 +36,7 @@ export const PeriodSelectorBarItem = ({ calendar, loading }) => {
     const [periodId, setPeriodId] = usePeriodId()
     const selectedPeriod = usePeriod(periodId,calendar)
     const [dataSetId] = useDataSetId()
-    const { data: metadata } = useMetadata()
+    const { data: metadata, isLoading } = useMetadata()
     const dataSet = selectors.getDataSetById(metadata, dataSetId)
     const dataSetPeriodType = periodTypesMapping[dataSet?.periodType]
     const openFuturePeriods = dataSet?.openFuturePeriods || 0
@@ -47,7 +47,6 @@ export const PeriodSelectorBarItem = ({ calendar, loading }) => {
     const [year, setYear] = useState(selectedPeriod?.year || currentFullYear)
 
     const dateLimit = useDateLimit(calendar);
-    console.log("Y1:",selectedPeriod?.year,"y2:",currentDay, "type:",dataSetPeriodType,"z:",dateLimit);
     const [maxYear, setMaxYear] = useState(() => getMaxYear(dateLimit))
     const periods = usePeriods({
         periodType: dataSetPeriodType,
@@ -69,12 +68,12 @@ export const PeriodSelectorBarItem = ({ calendar, loading }) => {
             setMaxYear(newMaxYear)
 
             if (!selectedPeriod?.year) {
-                setYear(currentFullYear);
-                //setYear(newMaxYear);
+                //setYear(currentFullYear);
+                setYear(newMaxYear);
             }
         }
-    }, [dataSetPeriodType, selectedPeriod?.year, dateLimit, currentFullYear])
-    //}, [dataSetPeriodType, selectedPeriod?.year, dateLimit])
+    //}, [dataSetPeriodType, selectedPeriod?.year, dateLimit, currentFullYear])
+    }, [dataSetPeriodType, selectedPeriod?.year, dateLimit])
 
     useEffect(() => {
         const resetPeriod = (id) => {
@@ -100,7 +99,6 @@ export const PeriodSelectorBarItem = ({ calendar, loading }) => {
     }, [
         selectedPeriod,
         dateLimit,
-        dataSet,
         periodId,
         setPeriodId,
         showWarningAlert,
@@ -113,7 +111,7 @@ export const PeriodSelectorBarItem = ({ calendar, loading }) => {
         <div data-test="period-selector">
             <DisabledTooltip>
                 <SelectorBarItem
-                    disabled={!dataSetId || loading}
+                    disabled={!dataSetId || loading || isLoading} 
                     label={i18n.t('Period')}
                     value={periodId ? selectorBarItemValue : undefined}
                     open={periodOpen}

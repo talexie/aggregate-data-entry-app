@@ -51,7 +51,7 @@ export const computePeriodDateLimit = ({
  */
 export const useDateLimit = (calendar) => {
     const [dataSetId] = useDataSetId()
-    const { data: metadata } = useMetadata()
+    const { data: metadata, isLoading } = useMetadata()
     const { fromClientDate } = useClientServerDateUtils(calendar);
     const currentDate = useClientServerDate({calendar: calendar})
     const currentDay = formatJsDateToDateString(currentDate?.serverDate);
@@ -60,7 +60,7 @@ export const useDateLimit = (calendar) => {
             const currentDate = fromClientDate(getCurrentDate(calendar))
             const dataSet = selectors.getDataSetById(metadata, dataSetId)
 
-            if (!dataSet) {
+            if (!dataSet && isLoading) {
                 return currentDay;
             }
 
@@ -78,6 +78,6 @@ export const useDateLimit = (calendar) => {
         // Adding `dateWithoutTime` to the dependency array so this hook will
         // recompute the date limit when the actual date changes
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [dataSetId, metadata, currentDay, fromClientDate,calendar]
+        [dataSetId, metadata, currentDay, fromClientDate,calendar,isLoading]
     )
 }
