@@ -41,8 +41,8 @@ export default function ContextSelector({ setSelectionHasNoFormMessage }) {
         }
     }
     useEffect(()=>{
-        if(!isLoading){
-            setCalendar(data?.calendar??'gregory');
+        if(!isLoading && data?.calendar){
+            setCalendar(data?.calendar);
         }
         setCalendar('gregory');
     },[data?.calendar,isLoading]);
