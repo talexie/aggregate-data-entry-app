@@ -2,7 +2,7 @@ import { useConfig } from '@dhis2/app-runtime'
 import { useMemo } from 'react'
 import { getCurrentDate } from '../fixed-periods/index.js'
 
-export default function useServerTimeOffset(calendar='gregory') {
+export default function useServerTimeOffset(calendar) {
     const { systemInfo } = useConfig()
     const { serverTimeZoneId: timeZone } = systemInfo
 

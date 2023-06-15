@@ -8,7 +8,7 @@ export default function useClientServerDateUtils(calendar) {
     const fromServerDate = useCallback(
         (serverDate) => {
             let clientDate = new Date(serverDate.getTime() + serverTimeOffset);
-            if(calendar === 'ethiopic'){
+            if(calendar === 'ethiopian'){
                 clientDate = new Date(moment(new Date(serverDate.getTime() + serverTimeOffset)?.toLocaleDateString('en-GB-u-ca-ethiopic').substring(0,10)));
             }
             return { serverDate, clientDate }
@@ -19,7 +19,7 @@ export default function useClientServerDateUtils(calendar) {
     const fromClientDate = useCallback(
         (clientDate) => {
             let serverDate = new Date(clientDate.getTime() - serverTimeOffset);
-            if(calendar === 'ethiopic'){
+            if(calendar === 'ethiopian'){
                 serverDate = new Date(moment(new Date(clientDate.getTime() - serverTimeOffset)?.toLocaleDateString('en-GB-u-ca-ethiopic').substring(0,10))); 
             }
             return { clientDate, serverDate }
