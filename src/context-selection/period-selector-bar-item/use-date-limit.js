@@ -60,7 +60,7 @@ export const useDateLimit = (calendar) => {
             const currentDate = fromClientDate(getCurrentDate(calendar))
             const dataSet = selectors.getDataSetById(metadata, dataSetId)
 
-            if (!dataSet && isLoading) {
+            if (!dataSet || isLoading) {
                 return currentDay;
             }
 

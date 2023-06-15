@@ -1,6 +1,6 @@
 import { generateFixedPeriods } from '@dhis2/multi-calendar-dates'
 import moment from 'moment'
-import { useMemo, useEffect, useState } from 'react'
+import { useMemo, useEffect, useState, useCallback } from 'react'
 import {
     formatJsDateToDateString,
     useClientServerDate,
@@ -28,7 +28,7 @@ export default function usePeriods({
     const currentDay = formatJsDateToDateString(currentDate.serverDate);
     const endsBefore = moment(dateLimit).format('yyyy-MM-DD')
         
-    const generateFixedPeriodsPayload = useMemo(()=>({
+    const generateFixedPeriodsPayload = useCallback(()=>({
         calendar: (calendar=='ethiopic'?'ethiopian': calendar),
         periodType: periodType??'MONTHLY',
         year: yearForGenerating,
@@ -56,7 +56,7 @@ export default function usePeriods({
             setPeriods([])
         }
         console.log("YYYYY::",generateFixedPeriodsPayload);
-        setPeriods(generateFixedPeriods(generateFixedPeriodsPayload))
+        setPeriods(generateFixedPeriods(generateFixedPeriodsPayload));
         
     },[periodType,generateFixedPeriodsPayload])
     console.log("YYY1111::",periods);
