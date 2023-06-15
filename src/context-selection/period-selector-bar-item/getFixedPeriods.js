@@ -1,7 +1,6 @@
 import {
     getMonthlyPeriods,
     getDailyPeriods,
-    getCustomCalendarIfExists,
     dhis2CalendarsMap,
     getValidLocale,
     getWeeklyPeriods,
