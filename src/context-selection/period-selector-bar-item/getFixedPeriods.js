@@ -8,6 +8,9 @@ import {
     getYearlyPeriods
 
 } from '@dhis2/multi-calendar-dates';
+import {
+    getCustomCalendarIfExists,
+} from '@dhis2/multi-calendar-dates/utils/helpers';
 
 export const generateFixedPeriods2 = ({
     year: yearString,
