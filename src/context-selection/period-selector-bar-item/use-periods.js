@@ -7,7 +7,7 @@ import {
     useUserInfo,
     yearlyFixedPeriodTypes,
 } from '../../shared/index.js'
-
+import { generateFixedPeriods2 } from './getFixedPeriods';
 
 
 export default function usePeriods({
@@ -51,12 +51,15 @@ export default function usePeriods({
     },[year,openFuturePeriods,isYearlyPeriodType]);
 
     useEffect(()=>{
+        const periodParams = generateFixedPeriodsPayload();
         if (!periodType) {
             setPeriods([])
         }
-        console.log("PeT:",periodType,"YYYYY::",generateFixedPeriodsPayload(),"Test:",generateFixedPeriods(generateFixedPeriodsPayload()));
-        setPeriods(generateFixedPeriods(generateFixedPeriodsPayload()));
-        
+        console.log("PeT:",periodType,"YYYYY::",periodParams,"Test:",generateFixedPeriods({
+            calendar: 'ethiopian', periodType: 'MONTHLY', year: 2015, endsBefore: '2015-08-01', locale: 'en',periodType: 'MONTHLY',year: 2015, yearsCount:46
+        }));
+        setPeriods(generateFixedPeriods(periodParams));
+        console.log("Test2:",generateFixedPeriods2(periodParams));
     },[periodType,generateFixedPeriodsPayload])
     console.log("YYY1111::",periods);
     return useMemo(() => {
