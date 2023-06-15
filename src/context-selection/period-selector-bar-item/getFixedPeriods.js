@@ -7,10 +7,28 @@ import {
     getYearlyPeriods
 
 } from '@dhis2/multi-calendar-dates';
-import {
-    getCustomCalendarIfExists,
-} from '@dhis2/multi-calendar-dates/utils/helpers';
+import { customCalendars } from '@dhis2/multi-calendar-dates/custom-calendars'
+export const isCustomCalendar = (calendar) =>!!customCalendars[calendar]
+export const getCustomCalendarIfExists = (
+    calendar
+) => {
+    const isCustom = isCustomCalendar(calendar)
+    if (!isCustom) {
+        return calendar
+    }
 
+    const customCalendar = customCalendars[
+        calendar
+    ]?.calendar
+
+    if (!customCalendar) {
+        throw new Error(
+            `No implemenation found for custom calendar ${calendar}`
+        )
+    }
+
+    return customCalendar
+}
 export const generateFixedPeriods2 = ({
     year: yearString,
     periodType,
