@@ -1,7 +1,4 @@
-import {
-    getAdjacentFixedPeriods,
-    getFixedPeriodByDate,
-} from '@dhis2/multi-calendar-dates'
+
 import moment from 'moment'
 import { useMemo } from 'react'
 import {
@@ -15,6 +12,10 @@ import {
     useClientServerDate,
 } from '../../shared/index.js'
 
+const getMaxYear = (dateLimit) => {
+    // periods run up to, but not including dateLimit, so decrement by 1 ms in case limit is 1 January
+    return moment(dateLimit).format('yyyy')
+}
 export const computePeriodDateLimit = ({
     periodType,
     serverDate,
@@ -23,17 +24,19 @@ export const computePeriodDateLimit = ({
 }) => {
     //const calendar = 'gregory'
     const date = moment(serverDate).format('yyyy-MM-DD')
-    const currentPeriod = getFixedPeriodByDate({
+    const [currentPeriod] = generateFixedPeriods({
         periodType,
-        date,
+        year: getMaxYear(serverDate),
         calendar,
     })
+    console.log("Current:",currentPeriod);
     if (openFuturePeriods <= 0) {
         return new Date(currentPeriod.startDate)
     }
 
-    const followingPeriods = getAdjacentFixedPeriods({
-        period: currentPeriod,
+    const followingPeriods = generateFixedPeriods({
+        periodType,
+        year: getMaxYear(currentPeriod.startDate),
         calendar,
         steps: openFuturePeriods,
     })

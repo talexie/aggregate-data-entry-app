@@ -1,4 +1,3 @@
-import { createFixedPeriodFromPeriodId } from '@dhis2/multi-calendar-dates'
 import { useMemo} from 'react';
 
 export default function usePeriod(periodId,calendar) {
@@ -9,10 +8,10 @@ export default function usePeriod(periodId,calendar) {
         }
 
         try {
-            return createFixedPeriodFromPeriodId({ periodId, calendar: calendar })
+            return periodId;
         } catch (e) {
             console.error(e)
             return null
         }
-    }, [periodId,calendar])
+    }, [periodId])
 }
