@@ -54,7 +54,7 @@ export default function usePeriods({
         if (!periodType) {
             setPeriods([])
         }
-        console.log("YYYYY::",generateFixedPeriodsPayload());
+        console.log("PeT:",periodType,"YYYYY::",generateFixedPeriodsPayload(),"Test:",generateFixedPeriods(generateFixedPeriodsPayload()));
         setPeriods(generateFixedPeriods(generateFixedPeriodsPayload()));
         
     },[periodType,generateFixedPeriodsPayload])
