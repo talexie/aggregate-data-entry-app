@@ -42,10 +42,9 @@ export default function ContextSelector({ setSelectionHasNoFormMessage }) {
     }
     useEffect(()=>{
         if(!isLoading){
-            if(data?.calendar==='ethiopian'){
-                setCalendar('ethiopic');
-            }
+            setCalendar(data?.calendar??'gregory');
         }
+        setCalendar('gregory');
     },[data?.calendar,isLoading]);
     return (
         <div className={styles.hideForPrint}>
