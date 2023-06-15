@@ -40,7 +40,6 @@ export default function usePeriods({
         // + 1 so we include 1970 as well
         yearsCount: yearForGenerating - 1970 + 1,
     }),[calendar,periodType, yearForGenerating,endsBefore,locale]);
-    console.log("YYY::", generateFixedPeriodsPayload);
     useEffect(()=>{
         setIsYearlyPeriodType(yearlyFixedPeriodTypes.includes(periodType));
     },[periodType]);
@@ -69,7 +68,7 @@ export default function usePeriods({
             return periods
         }
         const [lastPeriodOfPrevYear] = generateFixedPeriods({
-            ...generateFixedPeriodsPayload,
+            ...generateFixedPeriodsPayload(),
             year: yearForGenerating - 1,
         }).slice(-1)
         const [firstPeriodNextYear] = generateFixedPeriods({
