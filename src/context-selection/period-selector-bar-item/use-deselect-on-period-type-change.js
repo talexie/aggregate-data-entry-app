@@ -1,4 +1,4 @@
-import { createFixedPeriodFromPeriodId } from '@dhis2/multi-calendar-dates'
+
 import { useEffect, useState } from 'react'
 import { useDataSetId, usePeriodId } from '../../shared/index.js'
 
@@ -8,11 +8,9 @@ const convertPeriodIdToPeriodType = (periodId) => {
     }
 
     // @TODO(calendar)
-    const calendar = 'gregory'
     try {
         return (
-            createFixedPeriodFromPeriodId({ periodId: periodId, calendar })
-                ?.periodType || ''
+            periodId || ''
         )
     } catch (e) {
         console.error(e)

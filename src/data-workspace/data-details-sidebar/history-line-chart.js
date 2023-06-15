@@ -1,4 +1,4 @@
-import { createFixedPeriodFromPeriodId } from '@dhis2/multi-calendar-dates'
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -35,18 +35,8 @@ function sortHistoryByStartDate(history) {
     return [...history].sort((left, right) => {
         // @TODO(calendar)
         const calendar = 'gregory'
-        const leftStartDate = new Date(
-            createFixedPeriodFromPeriodId({
-                periodId: left.period,
-                calendar,
-            }).startDate
-        )
-        const rightStartDate = new Date(
-            createFixedPeriodFromPeriodId({
-                periodId: right.period,
-                calendar,
-            }).startDate
-        )
+        const leftStartDate = new Date(left.period)
+        const rightStartDate = new Date(right.period)
 
         if (leftStartDate > rightStartDate) {
             return 1
@@ -65,8 +55,7 @@ function createLabelsFromHistory(history) {
     const calendar = 'gregory'
     return history.map(({ period }) => {
         try {
-            return createFixedPeriodFromPeriodId({ periodId: period, calendar })
-                .displayName
+            return periodId
         } catch (e) {
             console.error(e)
             // In case period id is invalid

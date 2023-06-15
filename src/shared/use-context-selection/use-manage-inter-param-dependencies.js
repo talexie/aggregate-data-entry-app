@@ -1,6 +1,5 @@
 import { useAlert } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
-import { createFixedPeriodFromPeriodId } from '@dhis2/multi-calendar-dates'
 import { useEffect, useState } from 'react'
 import { useClientServerDateUtils } from '../date/index.js'
 import { useMetadata, selectors } from '../metadata/index.js'
@@ -33,10 +32,6 @@ function convertPeriodIdToPeriodType(periodId) {
     // Prevents invalid periods from throwing a runtime error. If this happens,
     // the app simply dismisses the invalid period id and notifies the user
     try {
-        const periodType = createFixedPeriodFromPeriodId({
-            periodId,
-            calendar,
-        })?.periodType
         return periodType || ''
     } catch (e) {
         console.error(e)

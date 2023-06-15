@@ -1,7 +1,4 @@
-import {
-    getAdjacentFixedPeriods,
-    createFixedPeriodFromPeriodId,
-} from '@dhis2/multi-calendar-dates'
+
 import { createCachedSelector } from 're-reselect'
 import { createSelector } from 'reselect'
 import { cartesian } from '../utils.js'
@@ -482,7 +479,7 @@ export const getCategoriesWithOptionsWithinPeriodWithOrgUnit =
 
             let period
             try {
-                period = createFixedPeriodFromPeriodId({ periodId, calendar })
+                period = periodId
             } catch (e) {
                 console.error(e)
                 // Handling invalid period ids
