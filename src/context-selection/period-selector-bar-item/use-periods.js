@@ -16,7 +16,8 @@ export default function usePeriods({
     // only required when periodType is a yearly period type
     openFuturePeriods,
     calendar
-}) {
+}) 
+{
     // @TODO(calendar)
     const [periods, setPeriods] = useState([]);
     const [isYearlyPeriodType, setIsYearlyPeriodType] = useState(false);

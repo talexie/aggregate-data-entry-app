@@ -1,7 +1,26 @@
-import { periodTypes as periodTypesOrig } from '@dhis2/multi-calendar-dates'
-
+export const periodIdentifiers = [
+    'DAILY',
+    'WEEKLY',
+    'WEEKLYWED',
+    'WEEKLYTHU',
+    'WEEKLYSAT',
+    'WEEKLYSUN',
+    'BIWEEKLY',
+    'MONTHLY',
+    'BIMONTHLY',
+    'QUARTERLY',
+    'QUARTERLYNOV', // used in Ethiopia
+    'SIXMONTHLY',
+    'SIXMONTHLYAPR',
+    'SIXMONTHLYNOV', // used in Ethiopia
+    'YEARLY',
+    'FYNOV',
+    'FYOCT',
+    'FYJUL',
+    'FYAPR',
+]
 const periodTypes = Object.fromEntries(
-    periodTypesOrig.map((periodType) => [periodType, periodType])
+    periodIdentifiers.map((periodType) => [periodType, periodType])
 )
 
 export default periodTypes

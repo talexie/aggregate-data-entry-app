@@ -2,7 +2,7 @@ import { Menu, MenuItem } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { usePeriod, usePeriodId } from '../../shared/index.js'
-import classes from './period-menu.module.css'
+import classes from './period-menu.module.css'  
 
 export default function PeriodMenu({ onChange, periods, calendar }) {
     const [periodId] = usePeriodId()

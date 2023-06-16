@@ -1,6 +1,6 @@
 // @TODO: export the groups from the multi-calendar-dates library
-import { periodTypes } from '@dhis2/multi-calendar-dates'
+import { periodIdentifiers } from './period-types';
 
-export const yearlyFixedPeriodTypes = periodTypes.filter((periodType) =>
+export const yearlyFixedPeriodTypes = periodIdentifiers.filter((periodType) =>
     periodType.match(/^(YEARLY|FY[A-Z]{3})/)
 )

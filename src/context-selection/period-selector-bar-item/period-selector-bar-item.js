@@ -105,8 +105,6 @@ export const PeriodSelectorBarItem = ({ calendar, loading }) => {
         dataSetPeriodType,
     ])
 
-    
-
     return (
         <div data-test="period-selector">
             <DisabledTooltip>
