@@ -457,9 +457,9 @@ export const getCategoriesWithOptionsWithinPeriodWithOrgUnit =
         (_, __, periodId) => periodId,
         (_, __, ___, orgUnitId) => orgUnitId,
         (_, __, ___, ____, fromClientDate) => fromClientDate,
-        (metadata, dataSet, periodId, orgUnitId, fromClientDate) => {
+        (metadata, dataSet, periodId, orgUnitId, fromClientDate,calendar) => {
             // @TODO(calendar)
-            const calendar = 'gregory'
+            //const calendar = 'gregory'
 
             if (!dataSet?.id || !periodId) {
                 return []
@@ -494,8 +494,8 @@ export const getCategoriesWithOptionsWithinPeriodWithOrgUnit =
                 clientPeriodStartDate
             ).serverDate
 
-            const [followingPeriod] = getAdjacentFixedPeriods({
-                period,
+            const [followingPeriod] = generateFixedPeriods({
+                periodType: dataSet?.periodType?.toUpperCase(),
                 calendar,
                 steps: 1,
             })
@@ -507,10 +507,10 @@ export const getCategoriesWithOptionsWithinPeriodWithOrgUnit =
 
             const previousPeriodsCount = openPeriodsAfterCoEndDate * -1
             const previousPeriods = previousPeriodsCount
-                ? getAdjacentFixedPeriods({
+                ? generateFixedPeriods({
                       steps: previousPeriodsCount,
-                      period,
-                      calendar: 'gregory',
+                      periodType: dataSet?.periodType?.toUpperCase(),
+                      calendar
                   })
                 : []
 

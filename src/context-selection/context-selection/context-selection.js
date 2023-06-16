@@ -25,8 +25,9 @@ const queryOpts = {
     staleTime: 24 * 60 * 60 * 1000,
 }
 export default function ContextSelector({ setSelectionHasNoFormMessage }) {
-    useManageInterParamDependencies()
     const [calendar,setCalendar]= useState('gregory');
+    useManageInterParamDependencies(calendar);
+
     const { data, isLoading } = useQuery(queryKey, queryOpts);
 
     const { hide } = useRightHandPanelContext()
@@ -46,7 +47,6 @@ export default function ContextSelector({ setSelectionHasNoFormMessage }) {
         }
         //setCalendar('gregory');
     },[data,isLoading]);
-    console.log("data:",data,"isLoading:",isLoading);
     return (
         <div className={styles.hideForPrint}>
             <SelectorBar
@@ -58,6 +58,7 @@ export default function ContextSelector({ setSelectionHasNoFormMessage }) {
                 <PeriodSelectorBarItem calendar={ calendar } loading={ isLoading }/>
                 <AttributeOptionComboSelectorBarItem
                     setSelectionHasNoFormMessage={setSelectionHasNoFormMessage}
+                    calendar={ calendar }
                 />
                 <SectionFilterSelectorBarItem />
             </SelectorBar>

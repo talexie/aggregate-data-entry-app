@@ -13,9 +13,9 @@ import {
     useSectionFilter,
 } from './use-context-selection.js'
 
-export default function useManageInterParamDependencies() {
+export default function useManageInterParamDependencies(calendar) {
     useHandleDataSetIdChange()
-    useHandleOrgUnitIdChange()
+    useHandleOrgUnitIdChange(calendar)
     useHandlePeriodIdChange()
     useHandleAttributeOptionComboSelectionChange()
     useHandleSectionFilterChange()
@@ -116,7 +116,7 @@ function useHandleDataSetIdChange() {
     ])
 }
 
-function useHandleOrgUnitIdChange() {
+function useHandleOrgUnitIdChange(calendar) {
     const { data: metadata } = useMetadata()
     const [dataSetId] = useDataSetId()
     const [periodId] = usePeriodId()
@@ -125,14 +125,15 @@ function useHandleOrgUnitIdChange() {
     const [attributeOptionComboSelection, setAttributeOptionComboSelection] =
         useAttributeOptionComboSelection()
 
-    const clientServerDateUtils = useClientServerDateUtils()
+    const clientServerDateUtils = useClientServerDateUtils(calendar)
     const relevantCategoriesWithOptions =
         selectors.getCategoriesWithOptionsWithinPeriodWithOrgUnit(
             metadata,
             dataSetId,
             periodId,
             orgUnitId,
-            clientServerDateUtils.fromClientDate
+            clientServerDateUtils.fromClientDate,
+            calendar
         )
 
     useEffect(() => {

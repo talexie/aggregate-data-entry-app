@@ -46,6 +46,7 @@ const useSetSelectionHasNoFormMessage = (
 
 export default function AttributeOptionComboSelectorBarItem({
     setSelectionHasNoFormMessage,
+    calendar
 }) {
     const { data: metadata } = useMetadata()
     const [dataSetId] = useDataSetId()
@@ -57,14 +58,15 @@ export default function AttributeOptionComboSelectorBarItem({
     )
     const [attributeOptionComboSelection, setAttributeOptionComboSelection] =
         useAttributeOptionComboSelection()
-    const { fromClientDate } = useClientServerDateUtils()
+    const { fromClientDate } = useClientServerDateUtils(calendar)
     const relevantCategoriesWithOptions =
         selectors.getCategoriesWithOptionsWithinPeriodWithOrgUnit(
             metadata,
             dataSetId,
             periodId,
             orgUnitId,
-            fromClientDate
+            fromClientDate,
+            calendar
         )
 
     const [open, setOpen] = useState(false)
