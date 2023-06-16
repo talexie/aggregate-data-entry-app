@@ -2,6 +2,8 @@
 import { createCachedSelector } from 're-reselect'
 import { createSelector } from 'reselect'
 import { cartesian } from '../utils.js'
+import { generateFixedPeriods } from '@dhis2/multi-calendar-dates';
+
 // Helper to group array items by an identifier
 
 const groupBy = (input, getIdentifier) =>
