@@ -11,6 +11,7 @@ import {
     useClientServerDateUtils,
     useClientServerDate,
 } from '../../shared/index.js'
+import { generateFixedPeriods } from '@dhis2/multi-calendar-dates'
 
 const getMaxYear = (dateLimit) => {
     // periods run up to, but not including dateLimit, so decrement by 1 ms in case limit is 1 January
