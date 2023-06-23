@@ -71,12 +71,6 @@ export const PeriodSelectorBarItem = ({ calendar, loading,allowedPeriodTypes=[] 
     const { show: showWarningAlert } = useAlert((message) => message, {
         warning: true,
     })
-    const [state,setState] = useState({
-        periodType: dataSetPeriodType,
-        calendar: calendar,
-        year: defaultFixedPeriodYear,
-        options: null,
-    });
     
     const [year, setYear] = useState(selectedPeriod?.year || currentFullYear)
 
@@ -89,42 +83,22 @@ export const PeriodSelectorBarItem = ({ calendar, loading,allowedPeriodTypes=[] 
         year: year,
         calendar: calendar
     })
- 
-
-    const onSelectPeriodType = (periodType) => {
-        setState({
-            periodType,
-            options: getUpdatedOptions(periodType, state.year),
-        })
-        //onChange()
-    }
-
-    const onSelectYear = (year) => {
-        setState({
-            year,
-            options: getUpdatedOptions(state.periodType, year),
-        })
-        //onChange()
-    }
 
     const onSelectPeriod = ({ selected: periodId }, event) => {
-        const period =state.options.find(({ id }) => id === periodId)
+        const period = parsePeriodCode(periodId, allowedPeriodTypes);
+        /*
+                periodType: period?.id??"MONTHLY",
+        year: period?.year??defaultFixedPeriodYear,
+        options: period?.options,
+        */
+        //const pe =state.options.find(({ id }) => id === periodId)
         //onChange(period, event)
     }
 
-    useEffect(()=>{
-    const period = parsePeriodCode(periodId, allowedPeriodTypes)
-    setState((t)=>({
-        ...t,
-        periodType: period?.id??"MONTHLY",
-        year: period?.year??defaultFixedPeriodYear,
-        options: period?.options,
-    }));
-    },[periodId,allowedPeriodTypes]);
-
-    console.log("XX:",state,"State:",getPeriodsByType(state?.periodType,()=>{},{
+    console.log("State:",getPeriodsByType(dataSetPeriodType,()=>{},{
         ...periodsSettings,
         calendar: calendar,
+        openFuturePeriods,
         year: year
     }),"periodID:",periodId);
     
