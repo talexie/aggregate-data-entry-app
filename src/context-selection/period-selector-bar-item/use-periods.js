@@ -55,12 +55,8 @@ export default function usePeriods({
         if (!periodType) {
             setPeriods([])
         }
-        console.log("PeT:",periodType,"YYYYY::",periodParams,"Test:",generateFixedPeriods({
-            calendar: 'ethiopian', periodType: 'MONTHLY', year: 2015, endsBefore: '2015-08-01', locale: 'en',periodType: 'MONTHLY',year: 2015, yearsCount:46
-        }));
         setPeriods(generateFixedPeriods(periodParams));
     },[periodType,generateFixedPeriodsPayload])
-    console.log("YYY1111::",periods);
     return useMemo(() => {
         // Adding `currentDay` to the dependency array so this hook will
         // recompute the date limit when the actual date changes

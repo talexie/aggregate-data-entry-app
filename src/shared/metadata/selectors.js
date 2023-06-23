@@ -499,7 +499,8 @@ export const getCategoriesWithOptionsWithinPeriodWithOrgUnit =
             const [followingPeriod] = generateFixedPeriods({
                 periodType: dataSet?.periodType?.toUpperCase(),
                 calendar,
-                steps: 1,
+                year: new Date(periodStartDate).getUTCFullYear(),
+                steps: 1
             })
 
             const openPeriodsAfterCoEndDate = Math.max(
@@ -512,7 +513,8 @@ export const getCategoriesWithOptionsWithinPeriodWithOrgUnit =
                 ? generateFixedPeriods({
                       steps: previousPeriodsCount,
                       periodType: dataSet?.periodType?.toUpperCase(),
-                      calendar
+                      calendar,
+                      year: new Date(periodStartDate).getUTCFullYear()
                   })
                 : []
 
