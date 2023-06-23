@@ -21,7 +21,7 @@ export default function useManageInterParamDependencies(calendar) {
     useHandleSectionFilterChange()
 }
 
-function convertPeriodIdToPeriodType(periodId) {
+function convertPeriodIdToPeriodType(periodId,periodType) {
     // @TODO(calendar)
     const calendar = 'gregory'
 
@@ -41,9 +41,7 @@ function convertPeriodIdToPeriodType(periodId) {
 
 function useHandleDataSetIdChange() {
     const [periodId, setPeriodId] = usePeriodId()
-    const [previousPeriodType, setPreviousPeriodType] = useState(() =>
-        convertPeriodIdToPeriodType(periodId)
-    )
+
     const [attributeOptionComboSelection, setAttributeOptionComboSelection] =
         useAttributeOptionComboSelection()
     const [dataSetId, setDataSetId] = useDataSetId()
@@ -56,7 +54,9 @@ function useHandleDataSetIdChange() {
         periodType: dataSetPeriodTypeRaw,
     } = selectors.getDataSetById(metadata, dataSetId) || {}
     const dataSetPeriodType = periodTypesMapping[dataSetPeriodTypeRaw]
-
+    const [previousPeriodType, setPreviousPeriodType] = useState(() =>
+        convertPeriodIdToPeriodType(periodId,dataSetPeriodType )
+    )
     const { show: showWarningAlert } = useAlert((message) => message, {
         warning: true,
     })

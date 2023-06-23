@@ -67,8 +67,8 @@ export const getPeriods = ({ periodType, config, fnFilter, periodSettings = {} }
 
   return periods
 }
-export const getPeriodsByType = (periodType, fnFilter, periodSettings,config) => {
-    if (config){
+export const getPeriodsByType = (periodType, fnFilter, periodSettings,config={}) => {
+    if (config && periodType?.includes('WEEKLY')){
         return getPeriods({
           periodType: periodType??"WEEKLY",
           config: {
