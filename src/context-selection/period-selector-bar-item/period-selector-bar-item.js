@@ -71,7 +71,7 @@ export const PeriodSelectorBarItem = ({ calendar, loading,allowedPeriodTypes=[] 
     const { show: showWarningAlert } = useAlert((message) => message, {
         warning: true,
     })
-    const [state,setState] = useState<any>({
+    const [state,setState] = useState({
         periodType: dataSetPeriodType,
         calendar: calendar,
         year: defaultFixedPeriodYear,
