@@ -15,7 +15,7 @@ import { generateFixedPeriods } from '@dhis2/multi-calendar-dates'
 
 const getMaxYear = (dateLimit) => {
     // periods run up to, but not including dateLimit, so decrement by 1 ms in case limit is 1 January
-    return moment(dateLimit).format('yyyy')
+    return new Date(dateLimit).getUTCFullYear();
 }
 export const computePeriodDateLimit = ({
     periodType,
@@ -27,10 +27,9 @@ export const computePeriodDateLimit = ({
     const date = moment(serverDate).format('yyyy-MM-DD')
     const [currentPeriod] = generateFixedPeriods({
         periodType,
-        year: getMaxYear(serverDate),
+        year: getMaxYear(date),
         calendar,
     })
-    console.log("Current:",currentPeriod);
     if (openFuturePeriods <= 0) {
         return new Date(currentPeriod.startDate)
     }
