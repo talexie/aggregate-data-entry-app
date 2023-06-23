@@ -30,20 +30,21 @@ export const computePeriodDateLimit = ({
         year: getMaxYear(date),
         calendar,
     })
+    console.log("currentPeriod",currentPeriod);
     if (openFuturePeriods <= 0) {
-        return new Date(currentPeriod.startDate)
+        return new Date(currentPeriod?.startDate)
     }
 
     const followingPeriods = generateFixedPeriods({
         periodType,
-        year: getMaxYear(currentPeriod.startDate),
+        year: getMaxYear(currentPeriod?.startDate),
         calendar,
         steps: openFuturePeriods,
     })
 
     const [lastFollowingPeriod] = followingPeriods.slice(-1)
 
-    return new Date(lastFollowingPeriod.startDate)
+    return new Date(lastFollowingPeriod?.startDate)
 }
 
 /**
