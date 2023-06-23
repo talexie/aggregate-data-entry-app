@@ -2,7 +2,7 @@
 import { createCachedSelector } from 're-reselect'
 import { createSelector } from 'reselect'
 import { cartesian } from '../utils.js'
-import { generateFixedPeriods } from '@dhis2/multi-calendar-dates';
+import { getPeriodsByType } from '../period/get-periods.js';
 
 // Helper to group array items by an identifier
 
@@ -496,8 +496,7 @@ export const getCategoriesWithOptionsWithinPeriodWithOrgUnit =
                 clientPeriodStartDate
             ).serverDate
 
-            const [followingPeriod] = generateFixedPeriods({
-                periodType: dataSet?.periodType?.toUpperCase(),
+            const [followingPeriod] = getPeriodsByType(dataSet?.periodType?.toUpperCase(),undefined,{
                 calendar,
                 year: new Date(periodStartDate).getUTCFullYear(),
                 steps: 1
@@ -510,9 +509,8 @@ export const getCategoriesWithOptionsWithinPeriodWithOrgUnit =
 
             const previousPeriodsCount = openPeriodsAfterCoEndDate * -1
             const previousPeriods = previousPeriodsCount
-                ? generateFixedPeriods({
+                ? getPeriodsByType(dataSet?.periodType?.toUpperCase(),undefined,{
                       steps: previousPeriodsCount,
-                      periodType: dataSet?.periodType?.toUpperCase(),
                       calendar,
                       year: new Date(periodStartDate).getUTCFullYear()
                   })
