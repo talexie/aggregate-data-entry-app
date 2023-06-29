@@ -6,8 +6,7 @@ import classes from './period-menu.module.css'
 
 export default function PeriodMenu({ onChange, periods, calendar }) {
     const [periodId] = usePeriodId()
-    const selectedPeriod = usePeriod(periodId, calendar);
-
+    const selectedPeriod = usePeriod(periodId, periods);
     return (
         <Menu dense className={classes.menu} dataTest="period-selector-menu">
             {periods.map((period) => (

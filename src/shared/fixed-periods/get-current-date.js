@@ -1,14 +1,10 @@
-import moment from 'moment';
+import { getNowInCalendar } from '@dhis2/multi-calendar-dates';
 /**
  * Initialise a Date instance with Date.now() for Jest mocking.
  */
 export default function getCurrentDate(calendar) {
-    
-    let currentDate = new Date(Date.now());
-
-    if(calendar === 'ethiopian'){
-        currentDate = new Date(moment(new Date(Date.now())?.toLocaleDateString('en-GB-u-ca-ethiopic').substring(0,10)));
-    }
+    const now = getNowInCalendar(calendar);
+    const currentDate = new Date(`${now.eraYear}-${now.month}-${now.day}`);
     // This will ensure that there's no rounding issue when calculating the
     // offset to the server time
     currentDate.setMilliseconds(0);

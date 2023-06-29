@@ -3,7 +3,7 @@ import i18n from '@dhis2/d2-i18n'
 import { useEffect, useState } from 'react'
 import { useClientServerDateUtils } from '../date/index.js'
 import { useMetadata, selectors } from '../metadata/index.js'
-import { periodTypesMapping } from '../period/index.js'
+import { periodTypesMapping, parsePeriodCode } from '../period/index.js'
 import { filterObject } from '../utils.js'
 import {
     usePeriodId,
@@ -16,7 +16,7 @@ import {
 export default function useManageInterParamDependencies(calendar) {
     useHandleDataSetIdChange()
     useHandleOrgUnitIdChange(calendar)
-    useHandlePeriodIdChange()
+    useHandlePeriodIdChange(calendar)
     useHandleAttributeOptionComboSelectionChange()
     useHandleSectionFilterChange()
 }
@@ -32,7 +32,7 @@ function convertPeriodIdToPeriodType(periodId,periodType) {
     // Prevents invalid periods from throwing a runtime error. If this happens,
     // the app simply dismisses the invalid period id and notifies the user
     try {
-        return periodType || ''
+        return periodType || parsePeriodCode(periodId, []);
     } catch (e) {
         console.error(e)
         return ''
@@ -199,7 +199,7 @@ function deselectAllUnavailableCategoryOptions({
     )
 }
 
-function useHandlePeriodIdChange() {
+function useHandlePeriodIdChange(calendar) {
     const { data: metadata } = useMetadata()
     const [attributeOptionComboSelection, setAttributeOptionComboSelection] =
         useAttributeOptionComboSelection()
@@ -207,7 +207,7 @@ function useHandlePeriodIdChange() {
     const [orgUnitId] = useOrgUnitId()
     const [periodId] = usePeriodId()
     const [prevPeriodId, setPrevPeriodId] = useState(periodId)
-    const clientServerDateUtils = useClientServerDateUtils()
+    const clientServerDateUtils = useClientServerDateUtils(calendar)
     const relevantCategoriesWithOptions =
         selectors.getCategoriesWithOptionsWithinPeriodWithOrgUnit(
             metadata,

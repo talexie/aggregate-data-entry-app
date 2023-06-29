@@ -10,7 +10,7 @@ export default function YearNavigator({ maxYear, year, onYearChange }) {
         <div className={classes.container}>
             <Button
                 dataTest="yearnavigator-backbutton"
-                disabled={year === startYear}
+                disabled={year <= startYear}
                 onClick={() => onYearChange(year - 1)}
                 icon={<IconArrowLeft24 />}
             />
@@ -22,7 +22,7 @@ export default function YearNavigator({ maxYear, year, onYearChange }) {
             </span>
             <Button
                 dataTest="yearnavigator-forwardbutton"
-                disabled={year === maxYear}
+                disabled={year >= maxYear}
                 onClick={() => onYearChange(year + 1)}
                 icon={<IconArrowRight24 />}
             />

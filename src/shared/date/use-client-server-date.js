@@ -7,7 +7,6 @@ export default function useClientServerDate({
     serverDate: serverDateInput,
     calendar
 } = {}) {
-
     if (clientDateInput && serverDateInput) {
         throw new Error(
             '`useClientServerDate` does not accept both a client and a server date'

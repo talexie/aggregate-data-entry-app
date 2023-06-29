@@ -51,8 +51,7 @@ export const getPeriods = ({ periodType, config, fnFilter, periodSettings = {} }
 
   const { calendar = 'gregory', locale = 'en' } = periodSettings
   const now = getNowInCalendar(calendar)
-  const year = (now.eraYear || now.year) + offset
-
+  const year = parseInt((periodSettings?.year || (now.eraYear || now.year)),10) + offset
   const params = {
       periodType,
       year,
@@ -279,7 +278,7 @@ export const getOptions = (periodSettings,config) => {
   ]
 }
 export const getFixedPeriodsOptionsById = (id, periodSettings={},config={}) => {
-  return getOptions(periodSettings,config).find((option) => option.id === id)
+  return getOptions(periodSettings,config)?.find((option) => option.id === id)
 }
 
 //export const getFixedPeriodsOptions = () => getOptions()

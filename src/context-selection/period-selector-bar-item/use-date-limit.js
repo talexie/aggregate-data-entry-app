@@ -10,12 +10,12 @@ import {
     periodTypesMapping,
     useClientServerDateUtils,
     useClientServerDate,
+    getPeriodsByType,
 } from '../../shared/index.js'
-import { generateFixedPeriods } from '@dhis2/multi-calendar-dates'
 
 const getMaxYear = (dateLimit) => {
     // periods run up to, but not including dateLimit, so decrement by 1 ms in case limit is 1 January
-    return new Date(dateLimit).getUTCFullYear();
+    return parseInt(new Date(dateLimit).getUTCFullYear(),10);
 }
 export const computePeriodDateLimit = ({
     periodType,
@@ -24,26 +24,22 @@ export const computePeriodDateLimit = ({
     calendar
 }) => {
     //const calendar = 'gregory'
-    const date = moment(serverDate).format('yyyy-MM-DD')
-    const [currentPeriod] = generateFixedPeriods({
-        periodType,
+    const date = serverDate.toLocaleDateString('sv');
+    const [currentPeriod] = getPeriodsByType(periodType,()=>{},{
         year: getMaxYear(date),
-        calendar,
-    })
-    console.log("currentPeriod",currentPeriod);
-    if (openFuturePeriods <= 0) {
+        calendar: calendar
+    }).reverse();
+    if (openFuturePeriods <= 0 && currentPeriod) {
         return new Date(currentPeriod?.startDate)
     }
 
-    const followingPeriods = generateFixedPeriods({
-        periodType,
+    const followingPeriods = getPeriodsByType(periodType,()=>{},{
         year: getMaxYear(currentPeriod?.startDate),
         calendar,
         steps: openFuturePeriods,
     })
 
     const [lastFollowingPeriod] = followingPeriods.slice(-1)
-
     return new Date(lastFollowingPeriod?.startDate)
 }
 
@@ -57,11 +53,11 @@ export const useDateLimit = (calendar) => {
     const [dataSetId] = useDataSetId()
     const { data: metadata, isLoading } = useMetadata()
     const { fromClientDate } = useClientServerDateUtils(calendar);
-    const currentDate = useClientServerDate({calendar: calendar})
+    let currentDate = useClientServerDate({calendar: calendar})
     const currentDay = formatJsDateToDateString(currentDate?.serverDate);
     return useMemo(
         () => {
-            const currentDate = fromClientDate(getCurrentDate(calendar))
+            currentDate = fromClientDate(getCurrentDate(calendar))
             const dataSet = selectors.getDataSetById(metadata, dataSetId)
 
             if (!dataSet || isLoading) {
@@ -70,7 +66,6 @@ export const useDateLimit = (calendar) => {
 
             const periodType = periodTypesMapping[dataSet.periodType]
             const openFuturePeriods = dataSet.openFuturePeriods || 0
-
             return computePeriodDateLimit({
                 periodType,
                 openFuturePeriods,
@@ -82,6 +77,6 @@ export const useDateLimit = (calendar) => {
         // Adding `dateWithoutTime` to the dependency array so this hook will
         // recompute the date limit when the actual date changes
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [dataSetId, metadata, currentDay, fromClientDate,calendar,isLoading]
+        [dataSetId, metadata, currentDay, currentDate, fromClientDate,calendar,isLoading]
     )
 }

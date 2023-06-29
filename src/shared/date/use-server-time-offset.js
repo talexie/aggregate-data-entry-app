@@ -15,5 +15,5 @@ export default function useServerTimeOffset(calendar) {
         const currentDateTime = currentDate.getTime()
         const nowAtServerTimeZoneTime = nowAtServerTimeZone.getTime()
         return currentDateTime - nowAtServerTimeZoneTime
-    }, [timeZone])
+    }, [timeZone,calendar])
 }

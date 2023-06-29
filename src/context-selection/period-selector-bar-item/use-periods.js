@@ -26,7 +26,7 @@ export default function usePeriods({
     const { keyUiLocale: locale } = userInfo.settings
     const currentDate = useClientServerDate({calendar:calendar});
     const currentDay = formatJsDateToDateString(currentDate.serverDate);
-    const endsBefore = moment(dateLimit).format('yyyy-MM-DD')
+    const endsBefore = dateLimit.toLocaleDateString('sv')
         
     const generateFixedPeriodsPayload = useCallback(()=>({
         calendar: calendar,
@@ -98,7 +98,6 @@ export default function usePeriods({
         ) {
             periods.push(firstPeriodNextYear)
         }
-        console.log("pe:",periods);
         return periods.reverse()
     }, [periods, year, isYearlyPeriodType,yearForGenerating,generateFixedPeriodsPayload])
 }

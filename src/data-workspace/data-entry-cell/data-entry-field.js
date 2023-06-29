@@ -7,6 +7,8 @@ import {
 import { getFieldId } from '../get-field-id.js'
 import { EntryFieldInput } from './entry-field-input.js'
 import { InnerWrapper } from './inner-wrapper.js'
+import DataItemBar from '../../bottom-bar/data-item-bar.js'
+import styles from './data-entry-cell.module.css'
 
 export const DataEntryField = React.memo(function DataEntryField({
     dataElement: de,
@@ -34,14 +36,17 @@ export const DataEntryField = React.memo(function DataEntryField({
             locked={locked}
             highlighted={highlighted}
         >
-            <EntryFieldInput
-                fieldname={fieldname}
-                dataElement={de}
-                categoryOptionCombo={coc}
-                disabled={disabled}
-                locked={locked}
-                highlighted={highlighted}
-            />
+            <div className={ styles.flexContainer}>
+                <EntryFieldInput
+                    fieldname={fieldname}
+                    dataElement={de}
+                    categoryOptionCombo={coc}
+                    disabled={disabled}
+                    locked={locked}
+                    highlighted={highlighted}
+                />
+                { highlighted && <DataItemBar showLabel={ false }/>}
+            </div>
         </InnerWrapper>
     )
 })

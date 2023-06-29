@@ -1,7 +1,7 @@
 import { useAlert } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { SelectorBarItem } from '@dhis2/ui'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import {
     selectors,
     useMetadata,
@@ -15,8 +15,6 @@ import {
     parsePeriodCode,
     getFixedPeriodsOptionsById,
     getYearOffsetFromNow,
-    MONTHLY, 
-    QUARTERLY,
     getPeriodsByType
 } from '../../shared/index.js'
 import DisabledTooltip from './disabled-tooltip.js'
@@ -40,10 +38,10 @@ const getUpdatedOptions=(periodType, year)=> {
 
 const getMaxYear = (dateLimit) => {
     // periods run up to, but not including dateLimit, so decrement by 1 ms in case limit is 1 January
-    return new Date(dateLimit - 1).getUTCFullYear()
+    return parseInt(new Date(dateLimit - 1).getUTCFullYear(),10)
 }
 
-export const PeriodSelectorBarItem = ({ calendar, loading,allowedPeriodTypes=[] }) => {
+export const PeriodSelectorBarItem = ({ calendar, loading }) => {
     const now = getNowInCalendar(calendar);
     // use ".eraYear" rather than ".year" because in Ethiopian calendar, eraYear is what our users expect to see (for other calendars, it doesn't matter)
     // there is still a pending decision in Temporal regarding which era to use by default: https://github.com/js-temporal/temporal-polyfill/blob/9350ee7dd0d29f329fc097debf923a517c32f813/lib/calendar.ts#L1964
@@ -54,15 +52,18 @@ export const PeriodSelectorBarItem = ({ calendar, loading,allowedPeriodTypes=[] 
         : getFixedPeriodsOptionsById(MONTHLY, periodsSettings)
     */
 
-
+    const dateLimit = useDateLimit(calendar);
     const currentDate = useClientServerDate({ calendar: calendar })
-    const selectorBarItemValue = useSelectorBarItemValue(calendar);
+    
     const currentDay = formatJsDateToDateString(currentDate.serverDate)
     //const currentFullYear = parseInt(currentDay.split('-')[0]);
     const currentFullYear = parseInt(defaultFixedPeriodYear);
     const [periodOpen, setPeriodOpen] = useState(false)
     const [periodId, setPeriodId] = usePeriodId()
-    const selectedPeriod = usePeriod(periodId,calendar)
+    const [generatedPeriods,setGeneratedPeriods] = useState([]);
+    const [periods,setPeriods] = useState([]);
+    const selectedPeriod = usePeriod(periodId,generatedPeriods);
+    const selectorBarItemValue = useSelectorBarItemValue(generatedPeriods);
     const [dataSetId] = useDataSetId()
     const { data: metadata, isLoading } = useMetadata()
     const dataSet = selectors.getDataSetById(metadata, dataSetId)
@@ -71,36 +72,18 @@ export const PeriodSelectorBarItem = ({ calendar, loading,allowedPeriodTypes=[] 
     const { show: showWarningAlert } = useAlert((message) => message, {
         warning: true,
     })
-    
     const [year, setYear] = useState(selectedPeriod?.year || currentFullYear)
-
-    const dateLimit = useDateLimit(calendar);
-    const [maxYear, setMaxYear] = useState(() => getMaxYear(dateLimit))
-    const periods = usePeriods({
-        periodType: dataSetPeriodType,
-        openFuturePeriods,
-        dateLimit: dateLimit,
-        year: year,
-        calendar: calendar
-    })
-
-    const onSelectPeriod = ({ selected: periodId }, event) => {
-        const period = parsePeriodCode(periodId, allowedPeriodTypes);
-        /*
-                periodType: period?.id??"MONTHLY",
-        year: period?.year??defaultFixedPeriodYear,
-        options: period?.options,
-        */
-        //const pe =state.options.find(({ id }) => id === periodId)
-        //onChange(period, event)
-    }
-
-    console.log("State:",getPeriodsByType(dataSetPeriodType,()=>{},{
-        ...periodsSettings,
-        calendar: calendar,
-        openFuturePeriods,
-        year: year
-    }),"periodID:",periodId);
+    
+    const [maxYear, setMaxYear] = useState(() => getMaxYear(dateLimit));
+    useEffect(()=>{
+        setPeriods(
+            getPeriodsByType(dataSetPeriodType,()=>{},{
+            ...periodsSettings,
+            calendar: calendar,
+            openFuturePeriods,
+            year: year
+        }));
+    },[year,calendar,openFuturePeriods,periodsSettings]);   
     
     useEffect(() => {
         if (selectedPeriod?.year) {
@@ -114,12 +97,10 @@ export const PeriodSelectorBarItem = ({ calendar, loading,allowedPeriodTypes=[] 
             setMaxYear(newMaxYear)
 
             if (!selectedPeriod?.year) {
-                //setYear(currentFullYear);
-                setYear(newMaxYear);
+                setYear(currentFullYear);
             }
         }
-    //}, [dataSetPeriodType, selectedPeriod?.year, dateLimit, currentFullYear])
-    }, [dataSetPeriodType, selectedPeriod?.year, dateLimit])
+    }, [dataSetPeriodType, selectedPeriod?.year, dateLimit, currentFullYear])
 
     useEffect(() => {
         const resetPeriod = (id) => {
@@ -131,17 +112,14 @@ export const PeriodSelectorBarItem = ({ calendar, loading,allowedPeriodTypes=[] 
         }
 
         if (selectedPeriod) {
-            const endDate = new Date(selectedPeriod?.endDate)
+            const endDate = new Date(selectedPeriod?.endDate);
             if (endDate >= dateLimit) {
                 resetPeriod(periodId)
             }
-
-            if (selectedPeriod?.periodType !== dataSetPeriodType) {
+           /* if (selectedPeriod?.periodType !== dataSetPeriodType) {
                 resetPeriod(periodId)
-            }
-        } else if (periodId) {
-            setPeriodId(undefined)
-        }
+            }*/
+        } 
     }, [
         selectedPeriod,
         dateLimit,
@@ -150,7 +128,6 @@ export const PeriodSelectorBarItem = ({ calendar, loading,allowedPeriodTypes=[] 
         showWarningAlert,
         dataSetPeriodType,
     ])
-
     return (
         <div data-test="period-selector">
             <DisabledTooltip>
@@ -169,16 +146,18 @@ export const PeriodSelectorBarItem = ({ calendar, loading,allowedPeriodTypes=[] 
                             ) && (
                                 <YearNavigator
                                     maxYear={maxYear}
-                                    year={year}
-                                    onYearChange={(year) => setYear(year)}
+                                    year={parseInt(year,10)}
+                                    onYearChange={(year) => setYear(parseInt(year),10)}
                                 />
                             )}
 
                             <PeriodMenu
                                 periods={periods}
                                 onChange={({ selected }) => {
+                                    setGeneratedPeriods(periods);
                                     setPeriodId(selected)
-                                    setPeriodOpen(false)
+                                    setPeriodOpen(false);
+                                    
                                 }}
                                 calendar ={ calendar }
                             />

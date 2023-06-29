@@ -82,26 +82,26 @@ export const GenericInput = ({
     }
 
     return (
-        <input
-            {...input}
-            value={input.value ?? ''}
-            className={cx(styles.basicInput, {
-                [styles.alignToEnd]: NUMBER_TYPES.includes(valueType),
-            })}
-            type={htmlTypeAttrsByValueType[valueType]}
-            onFocus={(...args) => {
-                input.onFocus(...args)
-                onFocus?.(...args)
-            }}
-            onBlur={(e) => {
-                handleBlur()
-                input.onBlur(e)
-            }}
-            autoComplete="off"
-            onKeyDown={onKeyDown}
-            disabled={disabled}
-            readOnly={locked}
-        />
+            <input
+                {...input}
+                value={input.value ?? ''}
+                className={cx(styles.basicInput, {
+                    [styles.alignToEnd]: NUMBER_TYPES.includes(valueType),
+                })}
+                type={htmlTypeAttrsByValueType[valueType]}
+                onFocus={(...args) => {
+                    input.onFocus(...args)
+                    onFocus?.(...args)
+                }}
+                onBlur={(e) => {
+                    handleBlur()
+                    input.onBlur(e)
+                }}
+                autoComplete="off"
+                onKeyDown={onKeyDown}
+                disabled={disabled}
+                readOnly={locked}
+            />
     )
 }
 

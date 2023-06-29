@@ -6,7 +6,9 @@
 .validationTooltipMessage div:not(:first-child) {
     margin-top: 8px;
 }
-
+.flexContainer {
+    display: flex;
+}
 .dataEntryCell {
     padding: 0px;
     min-width: 100px;

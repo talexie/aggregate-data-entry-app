@@ -25,11 +25,11 @@ import useOpenState from './use-open-state.js'
 
 const title = i18n.t('Audit log')
 
-export default function AuditLog({ item }) {
+export default function AuditLog({ item, calendar }) {
     const { offline } = useConnectionStatus()
     const { open, setOpen, openRef } = useOpenState(item)
     const dataValueContext = useDataValueContext(item, openRef.current)
-    const { fromServerDate } = useClientServerDateUtils()
+    const { fromServerDate } = useClientServerDateUtils(calendar)
 
     if (!offline && (!open || dataValueContext.isLoading)) {
         return (
