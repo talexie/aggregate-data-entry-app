@@ -12,7 +12,8 @@ import {
     periodTypesMapping,
     useClientServerDate,
     yearlyFixedPeriodTypes,
-    parsePeriodCode,
+    convertGregoryToOther,
+    convertNavigatorYear,
     getFixedPeriodsOptionsById,
     getYearOffsetFromNow,
     getPeriodsByType
@@ -38,7 +39,8 @@ const getUpdatedOptions=(periodType, year)=> {
 
 const getMaxYear = (dateLimit) => {
     // periods run up to, but not including dateLimit, so decrement by 1 ms in case limit is 1 January
-    return parseInt(new Date(dateLimit - 1).getUTCFullYear(),10)
+    //return parseInt(new Date(dateLimit - 1).getUTCFullYear(),10)
+    return new Date(dateLimit - 1).getUTCFullYear();
 }
 
 export const PeriodSelectorBarItem = ({ calendar, loading }) => {
@@ -53,6 +55,7 @@ export const PeriodSelectorBarItem = ({ calendar, loading }) => {
     */
 
     const dateLimit = useDateLimit(calendar);
+
     const currentDate = useClientServerDate({ calendar: calendar })
     
     const currentDay = formatJsDateToDateString(currentDate.serverDate)
@@ -77,13 +80,15 @@ export const PeriodSelectorBarItem = ({ calendar, loading }) => {
     const [maxYear, setMaxYear] = useState(() => getMaxYear(dateLimit));
     useEffect(()=>{
         setPeriods(
-            getPeriodsByType(dataSetPeriodType,()=>{},{
-            ...periodsSettings,
-            calendar: calendar,
-            openFuturePeriods,
-            year: year
-        }));
-    },[year,calendar,openFuturePeriods,periodsSettings]);   
+            convertGregoryToOther(
+                getPeriodsByType(dataSetPeriodType,()=>{},{
+                ...periodsSettings,
+                calendar: calendar,
+                openFuturePeriods,
+                year: year
+            }),dataSetPeriodType)
+        );
+    },[year,calendar,openFuturePeriods,periodsSettings,dataSetPeriodType]);   
     
     useEffect(() => {
         if (selectedPeriod?.year) {

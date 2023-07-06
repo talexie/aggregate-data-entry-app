@@ -1,5 +1,3 @@
-
-import moment from 'moment'
 import { useMemo } from 'react'
 import {
     selectors,
@@ -15,7 +13,8 @@ import {
 
 const getMaxYear = (dateLimit) => {
     // periods run up to, but not including dateLimit, so decrement by 1 ms in case limit is 1 January
-    return parseInt(new Date(dateLimit).getUTCFullYear(),10);
+    //return parseInt(new Date(dateLimit).getUTCFullYear(),10);
+    return new Date(dateLimit - 1).getUTCFullYear();
 }
 export const computePeriodDateLimit = ({
     periodType,
