@@ -34,6 +34,7 @@ export const PeriodSelectorBarItem = () => {
     const currentFullYear = parseInt(currentDay.split('-')[0])
     const [periodOpen, setPeriodOpen] = useState(false)
     const [periodId, setPeriodId] = usePeriodId()
+    const [selected, setSelected] = useState(null);
     const selectedPeriod = usePeriod(periodId)
     const [dataSetId] = useDataSetId()
     const { data: metadata } = useMetadata()
@@ -104,7 +105,7 @@ export const PeriodSelectorBarItem = () => {
         dataSetPeriodType,
     ])
 
-    const selectorBarItemValue = useSelectorBarItemValue()
+    const selectorBarItemValue = useSelectorBarItemValue(selected)
 
     return (
         <div data-test="period-selector">
@@ -131,7 +132,8 @@ export const PeriodSelectorBarItem = () => {
 
                             <PeriodMenu
                                 periods={convertGregoryToOther(periods,dataSetPeriodType)}
-                                onChange={({ selected }) => {
+                                onChange={({ selected, period }) => {
+                                    setSelected(period)
                                     setPeriodId(selected)
                                     setPeriodOpen(false)
                                 }}
