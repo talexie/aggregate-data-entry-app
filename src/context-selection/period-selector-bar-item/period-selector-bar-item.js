@@ -12,6 +12,7 @@ import {
     periodTypesMapping,
     useClientServerDate,
     yearlyFixedPeriodTypes,
+    convertGregoryToOther
 } from '../../shared/index.js'
 import DisabledTooltip from './disabled-tooltip.js'
 import PeriodMenu from './period-menu.js'
@@ -129,7 +130,7 @@ export const PeriodSelectorBarItem = () => {
                             )}
 
                             <PeriodMenu
-                                periods={periods}
+                                periods={convertGregoryToOther(periods,dataSetPeriodType)}
                                 onChange={({ selected }) => {
                                     setPeriodId(selected)
                                     setPeriodOpen(false)

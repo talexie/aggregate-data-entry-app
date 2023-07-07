@@ -2,7 +2,9 @@ import { Button, IconArrowRight24, IconArrowLeft24 } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React from 'react'
 import classes from './year-navigator.module.css'
-
+import {
+    convertNavigatorYear,
+} from '../../shared/index.js'
 const startYear = 1970
 
 export default function YearNavigator({ maxYear, year, onYearChange }) {
@@ -18,7 +20,7 @@ export default function YearNavigator({ maxYear, year, onYearChange }) {
                 data-test="yearnavigator-currentyear"
                 className={classes.year}
             >
-                {year}
+                { convertNavigatorYear(year)}
             </span>
             <Button
                 dataTest="yearnavigator-forwardbutton"
